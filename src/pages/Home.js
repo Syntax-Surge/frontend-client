@@ -1,12 +1,13 @@
-import { Button } from '@material-tailwind/react'
-import React from 'react'
+import { Button } from "@material-tailwind/react";
+import React from "react";
+import BuyButton from "../components/Buttons/BuyButton";
 
 const Home = () => {
   return (
     <div>
-      <Button>Hello</Button>
+      <BuyButton />
     </div>
-  )
-}
+  );
+};
 
-export default Home
+export default Home;
