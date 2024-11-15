@@ -14,7 +14,7 @@ const CheckoutButton = () => {
           width: "376px",
         }}
       >
-        Proceed to Checkout{" "}
+        PROCEED TO CHECKOUT{" "}
         <svg
           xmlns="http://www.w3.org/2000/svg"
           fill="none"
