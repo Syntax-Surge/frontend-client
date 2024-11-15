@@ -1,16 +1,16 @@
-import { Button } from '@material-tailwind/react'
-import React from 'react'
-import Navbar from '../components/layout/navbar'
+import React from "react";
+import SaveButton from "../components/Buttons/SaveButton";
+import Navbar from "../components/layout/navbar";
 
 const Home = () => {
   return (
     <div>
-      {/* <Button>Hello</Button> */}
+      {/* <SaveButton /> */}
       <div>
         <Navbar />
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Home
+export default Home;
