@@ -10,6 +10,7 @@ import {
 import { ToastContainer, toast } from 'react-toastify';
 import "react-toastify/dist/ReactToastify.css";
 import axios from 'axios';
+import { Link } from "react-router-dom";
 
 const SignIn = () => {
   const [firstName , setFirstName] = useState('')
@@ -49,11 +50,10 @@ const SignIn = () => {
       );
   };
   const  signInWithGoogle = () => {
-    window.location.href = "http://localhost:4000/api/login/federated/google";
-   
-    // axios.get("http://localhost:4000/api/login/federated/google" ).then((response) => {
-    //   console.log('response', response);
-    // }).catch((error)=>{console.log('error', error)})
+    window.location.href = "http://localhost:4000/login/federated/google";
+  }
+  const  signInWithFacebook = () => {
+    window.location.href = "http://localhost:4000/login/federated/facebook";
   }
   const  signUp = () => {
     if(firstName === "" ){
@@ -236,22 +236,13 @@ theme="light"
               >
                 Don't have an account ?{" "}
               </Typography>
-              <Button
+              <Link to={'/auth/signup'}> <Button
                 className="mt-6 bg-inherit  text-[#239b56] border-[#239b56]  border-solid border-2"
                 fullWidth
-                // onClick={ () => toast.success('Successfully Signed up', {
-                //   position: "top-center",
-                //   autoClose: 5000,
-                //   hideProgressBar: false,
-                //   closeOnClick: true,
-                //   pauseOnHover: true,
-                //   draggable: true,
-                //   progress: undefined,
-                //   theme: "light",
-                //   })}
+              
               >
                 Sign Up
-              </Button>
+              </Button></Link>
               <div className="relative flex py-5 items-center">
                 <div class="flex-grow border-t border-gray-400"></div>
                 <span class="flex-shrink mx-4 text-gray-400">
@@ -266,6 +257,7 @@ theme="light"
                   type="button"
                   className="inline-block rounded-full p-3 py-2.5 text-xs font-medium uppercase leading-normal text-white shadow-md transition duration-150 ease-in-out hover:shadow-lg focus:shadow-lg focus:outline-none focus:ring-0 active:shadow-lg"
                   style={{ backgroundColor: "#1877f2" }}
+                  onClick={ () => signInWithFacebook()}
                 >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"

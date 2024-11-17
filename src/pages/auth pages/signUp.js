@@ -10,6 +10,7 @@ import {
 import { ToastContainer, toast } from 'react-toastify';
 import "react-toastify/dist/ReactToastify.css";
 import axios from 'axios';
+import { Link } from "react-router-dom";
 
 const SignUp = () => {
   const [firstName , setFirstName] = useState('')
@@ -50,17 +51,9 @@ const SignUp = () => {
   };
   const  signInWithGoogle = () => {
     window.location.href = "http://localhost:4000/login/federated/google";
-   
-    // axios.get("http://localhost:4000/api/login/federated/google" ).then((response) => {
-    //   console.log('response', response);
-    // }).catch((error)=>{console.log('error', error)})
   }
   const  signInWithFacebook = () => {
     window.location.href = "http://localhost:4000/login/federated/facebook";
-   
-    // axios.get("http://localhost:4000/api/login/federated/google" ).then((response) => {
-    //   console.log('response', response);
-    // }).catch((error)=>{console.log('error', error)})
   }
   const  signUp = () => {
     if(firstName === "" ){
@@ -321,7 +314,7 @@ theme="light"
               >
                 Do you have an account?{" "}
               </Typography>
-              <Button
+              <Link to={'/auth/signIn'}> <Button
                 className="mt-6 bg-inherit  text-[#239b56] border-[#239b56]  border-solid border-2"
                 fullWidth
                 // onClick={ () => toast.success('Successfully Signed up', {
@@ -336,11 +329,11 @@ theme="light"
                 //   })}
               >
                 sign In
-              </Button>
+              </Button></Link>
               <div className="relative flex py-5 items-center">
                 <div class="flex-grow border-t border-gray-400"></div>
                 <span class="flex-shrink mx-4 text-gray-400">
-                  OR Sign Up with
+                  Or Sign Up with
                 </span>
                 <div class="flex-grow border-t border-gray-400"></div>
               </div>
