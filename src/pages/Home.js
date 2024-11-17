@@ -1,3 +1,4 @@
+
 import { Button } from '@material-tailwind/react'
 import React from 'react'
 import { Link } from 'react-router-dom'
@@ -11,8 +12,9 @@ const Home = () => {
       <br/>
   <Link to={'/auth/signup'}>    <Button > Sign up</Button></Link>
       <Link to={'/auth/signIn'}> <Button >Sign In</Button></Link>
-    </div>
-  )
-}
 
-export default Home
+    </div>
+  );
+};
+
+export default Home;
