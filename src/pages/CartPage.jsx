@@ -64,11 +64,11 @@ const CartPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-green-100 py-10">
+    <div className="min-h-screen bg-green-50 py-10">
       <div className="container mx-auto">
         <Typography
           variant="h3"
-          className="text-center mb-6 font-bold bg-gray-100 h-20 py-5 rounded-lg"
+          className="text-center mb-6 font-bold bg-white h-20 py-5 rounded-lg shadow-md"
           style={{ marginTop: "-20px" }}
         >
           Cart
@@ -78,7 +78,7 @@ const CartPage = () => {
 
           <Card className="p-6 col-span-2 shadow-lg">
             <Typography variant="h5" className="mb-4 font-semibold">
-              Shopping Card
+              Added Items
             </Typography>
             <div className="overflow-x-auto">
               <table className="table-auto w-full text-left">
@@ -86,7 +86,7 @@ const CartPage = () => {
                   <tr>
                     <th className="p-2">Products</th>
                     <th className="p-2">Price</th>
-                    <th className="p-2">Quantity</th>
+                    <th className="px-10">Quantity</th>
                     <th className="p-2">Subtotal</th>
                     <th className="p-2">Action</th>
                   </tr>
@@ -103,34 +103,35 @@ const CartPage = () => {
                         <Typography>{item.name}</Typography>
                       </td>
                       <td className="p-2">${item.price}</td>
-                      <td className="p-2 flex items-center">
+                      <td className="mb-4 p-2 flex items-center justify-center border border-gray-300 shadow-md">
                         <Button
                           size="sm"
+                          className="bg-white text-gray-800"
+                          style={{ fontSize: "24px" }}
                           onClick={() => handleQuantityChange(item.id, -1)}
                         >
                           -
                         </Button>
-                        <Input
-                          type="number"
-                          value={item.quantity}
-                          readOnly
-                          className="w-12 mx-2 text-center"
-                        />
+                        <Typography className="px-5 ">
+                          {item.quantity}
+                        </Typography>
                         <Button
                           size="sm"
+                          style={{ fontSize: "20px" }}
+                          className="bg-white text-gray-800"
                           onClick={() => handleQuantityChange(item.id, 1)}
                         >
                           +
                         </Button>
                       </td>
-                      <td className="p-2">${item.price * item.quantity}</td>
+                      <td className="px-7">${item.price * item.quantity}</td>
                       <td className="p-2">
                         <IconButton
                           onClick={() => handleRemoveItem(item.id)}
-                          className="text-red-500"
+                          className="text-red-900 bg-gray-100 rounded-2xl border border-gray-500"
                           size="sm"
                         >
-                          <XMarkIcon className="h-5 w-5" />
+                          <XMarkIcon className="h-4 w-4" />
                         </IconButton>
                       </td>
                     </tr>
@@ -144,7 +145,7 @@ const CartPage = () => {
 
           <Card className="p-6 shadow-lg">
             <Typography variant="h5" className="mb-4 font-semibold">
-              Card Total
+              Cart Total
             </Typography>
             <div className="flex justify-between">
               <Typography>Sub-total:</Typography>
