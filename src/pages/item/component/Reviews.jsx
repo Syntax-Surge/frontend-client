@@ -10,7 +10,7 @@ function Reviews({ onCardClick }) {
   };
 
   return (
-    <div className='bg-white my-5 shadow-sm' onClick={handleCardTop}>
+    <div className='bg-white my-5 pb-3 shadow-sm' onClick={handleCardTop}>
       {/* top  */}
       <div className='flex justify-between px-5 pt-5'>
         <div className='text-lg font-medium'>review</div>
