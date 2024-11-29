@@ -17,7 +17,7 @@ function App() {
           <Route>
             <Route path='/' element={<Home />} />
             <Route path='/shop' element={<Shop showHeroAndFilter={true} />} />
-            <Route path='/item' element={<Item />} />
+            <Route path='/item/:id' element={<Item />} />
           </Route>
 
           <Route>

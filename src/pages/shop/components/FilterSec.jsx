@@ -9,7 +9,7 @@ import Buttons from './buttons/button';
 function FilterSec() {
   return (
     <div className='py-4 shadow-lg'>
-      <div className='flex gap-1 justify-center'>
+      <div className='flex gap-1 justify-center '>
         {/* discount chip */}
         <Discount />
         {/* dropdown  */}
@@ -17,7 +17,7 @@ function FilterSec() {
         {/* search bar */}
         <Search />
       </div>
-      <div className='mt-2 flex gap-4 justify-center'>
+      <div className='mt-2 flex gap-4 justify-center '>
         <InputDefault placeholder='min' />
         <p>-</p>
         <InputDefault placeholder='max' />

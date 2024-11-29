@@ -7,13 +7,15 @@ function Shop({ showHeroAndFilter }) {
   // console.log(showHeroAndFilter);
 
   return (
-    <div>
+    <div className=''>
       {/* hero section */}
       {showHeroAndFilter && <HeroSec />}
       {/* filter section */}
       {showHeroAndFilter && <FilterSec />}
       {/* shop */}
       <ShopSec />
+
+
     </div>
   );
 }

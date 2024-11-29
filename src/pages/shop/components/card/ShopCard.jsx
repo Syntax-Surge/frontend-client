@@ -10,43 +10,40 @@ import {
 import Buttons from '../buttons/button';
 import { useNavigate } from 'react-router-dom';
 
-export function PlantItemCard() {
+export function PlantItemCard({ id, name, description, imageUrl, price }) {
+  // console.log(id);
+
   const navigate = useNavigate();
 
   const handleCardClick = () => {
-    console.log("clicked on card");
-    
-    navigate('/item');
+    navigate(`/item/${id}`);
   };
+
   return (
-    <Card className='max-w-[10rem] overflow-hidden ' onClick={handleCardClick}>
+    <Card className='overflow-hidden' onClick={handleCardClick}>
       <CardHeader
         floated={false}
         shadow={false}
         color='transparent'
         className='m-0'
       >
-        <img
-          src='https://images.unsplash.com/photo-1522202176988-66273c2fd55f?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1471&q=80'
-          alt='ui/ux review check'
-        />
+        <img src={imageUrl} alt={`${name}, image`} />
       </CardHeader>
       <CardBody className='p-1'>
         <Typography className='font-medium text-black text-sm font-roboto'>
-          UI/UX Review Check
+          {name}
         </Typography>
         <Typography
           variant='lead'
           color='gray'
           className='mt-2 font-normal text-xs font-roboto'
         >
-          Because it&apos;s about motivating the doers. Because I&apos;m here to
-          follow my dreams and inspire others.
+          {description}
         </Typography>
       </CardBody>
       <CardFooter className='flex items-center justify-center p-1 gap-4'>
         <Typography className='font-bold text-black text-sm font-roboto'>
-          LKR<span className='text-base'>678</span>.97
+          LKR<span className='text-base'>{price}</span>
         </Typography>
         {/* <Buttons /> */}
         <svg
