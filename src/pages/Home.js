@@ -8,6 +8,7 @@ const Home = () => {
     <div className='flex justify-center items-center space-x-8'>
       
       <Button>Hello</Button> 
+      <Link to={'/myaccount'}>    <Button > Account</Button></Link>
       <br/>
       <br/>
   <Link to={'/auth/signup'}>    <Button > Sign up</Button></Link>
