@@ -4,14 +4,15 @@ const Context = createContext();
 
 export const Provider = ({ children }) => {
   // Add global states here
+  const [puchaseItems, setPurchaseItems] = useState([]);
 
   return (
     <Context.Provider
-      value={
-        {
-          // return states here
-        }
-      }
+      value={{
+        // return states here
+        puchaseItems,
+        setPurchaseItems,
+      }}
     >
       {children}
     </Context.Provider>
