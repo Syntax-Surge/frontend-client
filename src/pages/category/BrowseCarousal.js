@@ -3,6 +3,7 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react'
 import { MdNavigateBefore, MdNavigateNext } from 'react-icons/md'
 import { useCustomContext } from '../../contexts/Context';
+import ProductList from './ProductList';
 
 
 const BrowseCarousal = () => {

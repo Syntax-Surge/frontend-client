@@ -29,8 +29,9 @@ const CategoryDetail = () => {
           <p>Details about {selectedCategory.description}</p>
         </div>
         <div>
-          <h2 className="text-2xl font-semibold">20+</h2>
+          <h2 className="text-2xl font-semibold">{selectedCategory.count}</h2>
           <p className="font-poppins">Plant Species</p>
+          <p className="font-poppins">{selectedCategory.id}</p>
         </div>
       </div>
       <div className="p-8 max-w-96 inline-block lg:items-end lg:ml-72 " >
