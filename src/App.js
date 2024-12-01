@@ -6,6 +6,8 @@ import SignUp from './pages/auth pages/signUp';
 import SignIn from './pages/auth pages/signIn';
 import Shop from './pages/shop/Shop';
 import Item from './pages/item/Item';
+import BrowseByCategory from './pages/category/BrowseByCategory';
+import Navbar from './components/layout/navbar';
 
 // border border-black
 
@@ -13,6 +15,7 @@ function App() {
   return (
     <Provider>
       <BrowserRouter>
+        <Navbar />
         <Routes>
           <Route>
             <Route path='/' element={<Home />} />
@@ -23,6 +26,10 @@ function App() {
           <Route>
             <Route path='/auth/signup' element={<SignUp />} />
             <Route path='/auth/signIn' element={<SignIn />} />
+          </Route>
+
+          <Route>
+            <Route path='/browse' element={<BrowseByCategory/>} />
           </Route>
         </Routes>
       </BrowserRouter>

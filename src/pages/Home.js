@@ -11,6 +11,7 @@ const Home = () => {
       <br/>
       <Link to={'/auth/signup'}>    <Button > Sign up</Button></Link>
       <Link to={'/auth/signIn'}> <Button >Sign In</Button></Link>
+      <Link to={'/browse'}> <Button>Browse Page</Button></Link>
 
     </div>
   );
