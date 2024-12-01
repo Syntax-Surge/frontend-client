@@ -1,7 +1,7 @@
 import './App.css';
-import { BrowserRouter, Routes, Route} from 'react-router-dom'
+import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import { Provider } from './contexts/Context';
-import Home from './pages/Home'; 
+import Home from './pages/Home';
 import SignUp from './pages/auth pages/signUp';
 import SignIn from './pages/auth pages/signIn';
 import Shop from './pages/shop/Shop';
@@ -10,6 +10,7 @@ import BrowseByCategory from './pages/category/BrowseByCategory';
 import Navbar from './components/layout/navbar';
 
 // border border-black
+import Profile from './pages/profile/Profile';
 
 function App() {
   return (
@@ -20,7 +21,8 @@ function App() {
           <Route>
             <Route path='/' element={<Home />} />
             <Route path='/shop' element={<Shop showHeroAndFilter={true} />} />
-            <Route path='/item/:id' element={<Item />} />
+            <Route path='/item/:id' element={<Item  />} />
+            <Route path="/myaccount" element={<Profile />} />
           </Route>
 
           <Route>
