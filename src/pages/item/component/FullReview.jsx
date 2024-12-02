@@ -1,7 +1,33 @@
 import { Typography, Avatar, Rating } from '@material-tailwind/react';
 import Rate from './Rate';
+import { useEffect, useState } from 'react';
+import axios from 'axios';
 
-export function FullReview() {
+export function FullReview(userId, description, date) {
+  const [user,setUser] = useState({});
+
+  useEffect(() => {
+    const getUserById = async () => {
+      try {
+        const user = await axios.get(
+          'http://localhost:5000/api/v1/users/getUserByID',
+          {
+            params: { id: userId },
+          }
+        );
+        setUser(user);
+        console.log(user);
+        
+      } catch (error) {
+        console.error(error.message);
+      }
+    };
+    getUserById();
+  }, []);
+
+  console.log();
+  
+
   return (
     <div className='px-6 mt-5 mb-8'>
       <div className='flex'>
