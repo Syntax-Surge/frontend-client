@@ -80,7 +80,7 @@ const ProductList = () => {
                     />
                 ))}
             </div>
-            {loading && <p>Loading...</p>}
+            {loading && <p className="text-center font-poppins text-opacity-50 mt-4">Loading...</p>}
             {!hasMore && items.length > 0 && <p className="text-center font-poppins text-opacity-50 mt-4">No more products to show.</p>}
             {hasMore && <div ref={ref} style={{ height: '1px' }} />} {/* Trigger for infinite scroll */}
         </div>

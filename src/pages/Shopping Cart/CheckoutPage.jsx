@@ -19,9 +19,9 @@ const CheckoutPage = () => {
         <h3 className="text-center mb-6 text-xl font-bold">Checkout Page</h3>
         {/* Display selected items */}
         <div>
-          {selectedItems?.length > 0 ? (
+          {puchaseItems?.length > 0 ? (
             <ul>
-              {selectedItems?.map((item, index) => (
+              {puchaseItems?.map((item, index) => (
                 <li key={index}>
                   <span>
                     {item.name} - {item.quantity}

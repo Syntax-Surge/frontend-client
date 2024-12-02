@@ -9,7 +9,7 @@ import SearchBar from "../searchbar/seachbar";
 const Navbar = () => {
   const [searchActive, setSearchActive] = useState(false);
   return (
-    <nav className="bg-white border-b-4 border-green-100 p-4 flex justify-between items-center h-20">
+    <nav className="bg-white p-4 flex justify-between items-center h-20">
       <div className="flex items-center ml-7">
         <PiPottedPlantLight />
         {/* <img src="/logo.svg" alt="PlantyX Logo" className="w-8 h-8 mr-2" /> */}
