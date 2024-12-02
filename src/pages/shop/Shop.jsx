@@ -1,7 +1,7 @@
-import React from 'react'
-import HeroSec from './components/HeroSec'
-import FilterSec from './components/FilterSec'
-import ShopSec from './components/Shop'
+import React from 'react';
+import HeroSec from './components/HeroSec';
+import FilterSec from './components/FilterSec';
+import ShopSec from './components/Shop';
 
 function Shop({ showHeroAndFilter }) {
   // console.log(showHeroAndFilter);
@@ -10,14 +10,14 @@ function Shop({ showHeroAndFilter }) {
     <div className=''>
       {/* hero section */}
       {showHeroAndFilter && <HeroSec />}
-      {/* filter section */}
-      {showHeroAndFilter && <FilterSec />}
-      {/* shop */}
-      <ShopSec />
-
-
+      <div className='md:flex'>
+        {/* filter section */}
+        {showHeroAndFilter && <FilterSec />}
+        {/* shop */}
+        <ShopSec />
+      </div>
     </div>
   );
 }
 
-export default Shop
+export default Shop;

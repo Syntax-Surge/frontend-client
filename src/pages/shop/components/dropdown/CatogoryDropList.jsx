@@ -24,6 +24,7 @@ export function CatogoryDropList() {
 
   return (
     <Menu
+    className='md:hidden'
       open={openMenu}
       handler={setOpenMenu}
       animate={{
@@ -37,10 +38,11 @@ export function CatogoryDropList() {
       <MenuHandler>
         <Button
           variant='text'
-          className='flex items-center gap-3 text-xs font-poppins font-normal capitalize tracking-normal bg-[rgba(213,213,213,0.41)] rounded-full py-[8px] px-[16px]'
+          className='flex items-center gap-3 text-xs font-poppins font-normal capitalize tracking-normal bg-[rgba(213,213,213,0.41)] rounded-full py-[8px] px-[16px] 
+          sm:text-sm sm:px-[40px]'
           onClick={() => setOpenMenu(!openMenu)}
         >
-          Technology
+          Catagories
           <ChevronDownIcon
             strokeWidth={2.5}
             className={`h-3.5 w-3.5 transition-transform ${
