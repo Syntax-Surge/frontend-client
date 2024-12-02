@@ -39,8 +39,8 @@ const CartPage = () => {
   const url = "http://localhost:8080/api";
 
   const handleCheckout = () => {
-    console.log(selectedItems);
-    setPurchaseItems(selectedItems);
+    setPurchaseItems(selectedCartItems);  
+    console.log("Selected Items for Checkout:", selectedCartItems);
   };
 
   // Fetch cart items from the backend

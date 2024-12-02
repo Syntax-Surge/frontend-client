@@ -1,13 +1,17 @@
-import React, { useEffect } from "react";
-import { useCustomContext } from "../../contexts/Context.js";
+import React, { useEffect } from 'react'
+import { useCustomContext } from '../../contexts/Context';
+
+
+
+
 
 const CheckoutPage = () => {
-  // Access selectedItems from Context
-  const { selectedItems, setSelectedItems } = useCustomContext();
+  const { puchaseItems } = useCustomContext();
+
 
   useEffect(() => {
-    console.log("Selected items in checkout:", selectedItems);
-  }, [selectedItems]);
+    console.log("Items passed to this component:", puchaseItems);
+  }, [puchaseItems]);
 
   return (
     <div className="min-h-screen bg-gray-100 py-10">
@@ -34,4 +38,4 @@ const CheckoutPage = () => {
   );
 };
 
-export default CheckoutPage;
+export default CheckoutPage
