@@ -8,6 +8,7 @@ import Shop from './pages/shop/Shop';
 import Item from './pages/item/Item';
 import BrowseByCategory from './pages/category/BrowseByCategory';
 import Navbar from './components/layout/navbar';
+import CartPage from "./pages/Shopping Cart/CartPage";
 
 // border border-black
 import Profile from './pages/profile/Profile';
@@ -23,11 +24,12 @@ function App() {
             <Route path='/shop' element={<Shop showHeroAndFilter={true} />} />
             <Route path='/item/:id' element={<Item  />} />
             <Route path="/myaccount" element={<Profile />} />
+            <Route path="/cart/:userId" element={<CartPage />} />
           </Route>
 
           <Route>
-            <Route path='/auth/signup' element={<SignUp />} />
-            <Route path='/auth/signIn' element={<SignIn />} />
+            <Route path="/auth/signup" element={<SignUp />} />
+            <Route path="/auth/signIn" element={<SignIn />} />
           </Route>
 
           <Route>
