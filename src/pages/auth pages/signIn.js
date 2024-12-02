@@ -10,7 +10,7 @@ import {
 import { ToastContainer, toast } from 'react-toastify';
 import "react-toastify/dist/ReactToastify.css";
 import axios from 'axios';
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const SignIn = () => {
   const [firstName , setFirstName] = useState('')
@@ -24,14 +24,12 @@ const SignIn = () => {
   const [emailError , setEmailError] = useState(false)
   const [contactNoError , setContactNoError] = useState(false)
   const [passwordError , setPasswordError] = useState(false)
+  const [isLoadingSignIn, setIsLoadingSignIn] = useState(false);
+  const navigate = useNavigate();
 
   const userData = {
-    "firstName": firstName,
-  "lastName": lastName,
-  "email": email,
+  "username": email,
   "password": password,
-  "contactNo": contactNo,
-  "profileImage": ""
   }
 
   const validateEmail = (email) => {
@@ -49,32 +47,15 @@ const SignIn = () => {
         /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
       );
   };
+
   const  signInWithGoogle = () => {
     window.location.href = "http://localhost:4000/login/federated/google";
   }
   const  signInWithFacebook = () => {
     window.location.href = "http://localhost:4000/login/federated/facebook";
   }
-  const  signUp = () => {
-    if(firstName === "" ){
-      setFirstNameError(true)
-    }
-    else{
-      setFirstNameError(false)
-    }
-    if(contactNo === "" ){
-      setContactNoError(true)
-    }
-    else{
-      setContactNoError(false)
-    }
-
-    if(lastName === ""){
-      setLastNameError(true)
-    }
-    else{
-      setLastNameError(false)
-    }
+  const  signIn = async() => {
+   
     if(email === "" ||  !validateEmail(email) ){
       setEmailError(true)
     }
@@ -87,11 +68,13 @@ const SignIn = () => {
     else{
       setPasswordError(false)
     }
-   
-    axios.post("http://localhost:4000/api/signUp" , userData).then( (res) => {
-      console.log('res.status', res.status)
-      if(res.status === 200){
-        toast.success('Successfully Signed up', {
+   setIsLoadingSignIn(true)
+   await  axios.post("http://localhost:4000/login" , userData).then( (res) => {
+     console.log('res.status', res.status)
+     
+     if(res.status === 200){
+        setIsLoadingSignIn(false)
+        toast.success('Successfully Signed In', {
           position: "top-center",
           autoClose: 5000,
           hideProgressBar: false,
@@ -101,12 +84,18 @@ const SignIn = () => {
           progress: undefined,
           theme: "light",
           });
-      }
-      console.log('res : ', res.data)
-    }).catch( (error) => {
-      console.log('error', error)
-      toast.error('Sign up not successful !', {
-        position: "top-center",
+          setTimeout(() => {
+            navigate("/");
+          }, 2000); // Slightly longer than `autoClose` duration to ensure the toast is fully visible
+        
+          // navigate('/')
+        }
+        console.log('res : ', res.data)
+      }).catch( (error) => {
+        setIsLoadingSignIn(false)
+        console.log('error', error.response.data.msg)
+        toast.error(`${error.response.data.msg} !`, {
+          position: "top-center",
         autoClose: 5000,
         hideProgressBar: false,
         closeOnClick: true,
@@ -225,10 +214,19 @@ theme="light"
                 }
                 containerProps={{ className: "-ml-2.5" }}
               /> */}
-              <Button className="mt-6 bg-[#3FAEAE]" fullWidth
-              onClick={ (e) => {console.log('userData', userData);signUp()}}>
+              <Link to={'/auth/user/forgot-password'}><Typography
+                variant="h4"
+                color="black"
+                className="font-normal text-xl text-[#239b56] font-roboto flex justify-center items-center mt-4 hover:underline"
+                // onMouseEnter={}
+              >
+                Forgot Password ?{" "}
+              </Typography></Link>
+              <Button className="mt-6 bg-[#3FAEAE] flex justify-center" fullWidth loading={isLoadingSignIn}
+              onClick={ (e) => {console.log('userData', userData);signIn()}}>
                 sign In
               </Button>
+
               <Typography
                 variant="h4"
                 color="black"
