@@ -24,7 +24,7 @@ const Hero = () => {
                     >
                     </TypeAnimation>
                     <div className='py-6'>
-                        <Link to={'/item'}><Button className='rounded-full hover:scale-110 hover:drop-shadow-xl hover:border-4 hover:border-blue-gray-300 hover:text-blue-gray-200'> Explore</Button></Link>
+                        <Link to={'/shop'}><Button className='rounded-full hover:drop-shadow-xl hover:text-blue-gray-200 hover:scale-110 hover:duration-200'> Explore</Button></Link>
                     </div>
                     <TypeAnimation
                          sequence={[
@@ -39,7 +39,7 @@ const Hero = () => {
                     </TypeAnimation>
                     <TypeAnimation
                          sequence={[
-                            "We've been mentioned in the press",
+                            "We help you find your dream plant",
                             500, 
                           ]}
                           wrapper="span"
