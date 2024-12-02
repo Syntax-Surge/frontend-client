@@ -1,16 +1,35 @@
-import { Button } from '@material-tailwind/react'
-import React from 'react'
-import Navbar from '../components/layout/navbar'
+import { Button } from "@material-tailwind/react";
+import React from "react";
+import { Link } from "react-router-dom";
+import CheckoutPage from "./Shopping Cart/CheckoutPage";
 
 const Home = () => {
   return (
-    <div>
-      {/* <Button>Hello</Button> */}
-      <div>
-        <Navbar />
-      </div>
-    </div>
-  )
-}
+    <div className='flex justify-center items-center space-x-8'>
+      
+      <Button>Hello</Button> 
+      <Link to={'/myaccount'}>    <Button > Account</Button></Link>
+      <br/>
+      <br/>
+      <Link to={'/auth/signup'}>    <Button > Sign up</Button></Link>
+      <Link to={'/auth/signIn'}> <Button >Sign In</Button></Link>
+      <Link to={'/browse'}> <Button>Browse Page</Button></Link>
+      <Link to={'/browse'}> <Button>Browse Page</Button></Link>
+      <Link to={'/cart/:userId'}> <Button>Cart Page</Button></Link>
 
-export default Home
+      <br />
+      <br />
+      <Link to={"/auth/signup"}>
+        {" "}
+        <Button> Sign up</Button>
+      </Link>
+      <Link to={"/auth/signIn"}>
+        {" "}
+        <Button>Sign In</Button>
+      </Link>
+      {/* <CheckoutPage /> */}
+    </div>
+  );
+};
+
+export default Home;

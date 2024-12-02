@@ -1,16 +1,26 @@
+import { useCustomContext } from "../../contexts/Context.js";
+import { Card, Input, Typography } from "@material-tailwind/react";
 import { Elements } from '@stripe/react-stripe-js';
 import { loadStripe } from '@stripe/stripe-js';
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import PaymentElementComponent from '../components/paymentGateway/PaymentElement';
+import PaymentElementComponent from '../../components/paymentGateway/PaymentElement';
+import PlaceOrderButton from "../../components/Buttons/PlaceOrderButton";
+import PurchaseOrderButton from "../../components/Buttons/PurchaseOrderButton.jsx";
 
-// Load your Stripe publishable key
 const stripePromise = loadStripe('pk_test_51QLLasJ0oMtKGRpAMtPenfN7BmuRRhxy0IrWx9p4bwZOzSdlHmBsmVaZztHSjRTha9bz9yo6a1jQiDZsuSXal6hz00rUuInQtc');
 
-function Checkout() {
+
+const CheckoutPage = () => {
+  const [selectedItems, setSelectedItems] = useState([{"productId":2,"productName":"kaktus","quantity":3,"pictureLocation":"","subTotal":5200,"price":200},{"productId":2,"productName":"kaktus","quantity":3,"pictureLocation":"","subTotal":5200,"price":200}]);
+
+  useEffect(() => {
+    console.log("Selected items in checkout:", selectedItems);
+  }, [selectedItems]);
+
+  const [errors, setErrors] = useState({});
   const [clientSecret, setClientSecret] = useState('');
   const [orderPlaced, setOrderPlaced] = useState(false);
-  const [selectedItems, setSelectedItems] = useState([{"productId":2,"productName":"kaktus","quantity":3,"pictureLocation":"","subTotal":5200,"price":200},{"productId":2,"productName":"kaktus","quantity":3,"pictureLocation":"","subTotal":5200,"price":200}]);
   const [shippingDetails, setShippingDetails] = useState({
     "firstName": "",
     "lastName":"",
@@ -26,11 +36,44 @@ function Checkout() {
 
   const {itemTotal,shipping}=total
 
+  const handleShippingChange = (value) => {
+    setTotal((prevTotal) => ({
+      ...prevTotal,
+      shipping: value,
+    }));
+  };
+
   const {addressLine1,addressLine2,city,postalCode,firstName,lastName,phone,note,shippingMethod}=shippingDetails
 
-  const onPurchase = async () => {
-    console.log(shippingDetails);
+
+  const validateForm = () => {
+    const newErrors = {};
+    const phoneRegex = /^[0-9]{10}$/; // Example: 10-digit phone number
+    const postalCodeRegex = /^[0-9]{5}$/; // Example: 5-digit postal code
+    if (!shippingDetails.addressLine1.trim()) newErrors.addressLine1 = "Address Line 1 is required.";
+    if (!shippingDetails.city.trim()) newErrors.city = "City is required.";
+    if (!shippingDetails.postalCode.trim()) {
+      newErrors.postalCode = "Postal code is required.";
+    } else if (!postalCodeRegex.test(shippingDetails.postalCode)) {
+      newErrors.postalCode = "Invalid postal code.";
+    }
+    if (!shippingDetails.phone.trim()) {
+      newErrors.phone = "Phone number is required.";
+    } else if (!phoneRegex.test(shippingDetails.phone)) {
+      newErrors.phone = "Invalid phone number.";
+    }
+    return newErrors;
+  };
+
+  const onPlaceOrder = async () => {
+    console.log("shippingDetails");
+    const formErrors = validateForm();
+    setErrors(formErrors);
+
+    if (Object.keys(formErrors).length === 0) {
+      console.log("Form submitted successfully", shippingDetails);
     
+
     axios
       .post('http://localhost:3006/api/payment/createIntent', 
         {
@@ -46,7 +89,7 @@ function Checkout() {
             "postalCode": "62704",
             "country": "USA"
           },
-          "total":5400.00,
+          "total":(shipping + itemTotal).toFixed(2),
           "items": selectedItems
         })
       .then((response) => {
@@ -61,6 +104,9 @@ function Checkout() {
       .catch((error) => {
         console.error('Error fetching client secret:', error);
       });
+    } else {
+      console.log("Validation errors", formErrors);
+    }
       
   }
 
@@ -119,181 +165,188 @@ const formChange=(e)=>{
   };
 
   return (
-    <div  className="min-h-screen bg-green-50 py-10">
-      <div className=" flex flex-col">
-        {/* Card Totals */}
-        <div className='flex flex-row p-6'>
-          <div className="w-full  border border-gray-200 rounded-md p-4">
-            <h3 className="text-lg font-semibold mb-4">Card Totals</h3>
-            <div className="flex justify-between items-center mb-2">
-              <span>Sub-total:</span>
-              <span className="font-medium">$382</span>
-            </div>
-            <div className="flex justify-between items-center mb-2">
-              <span>Discount:</span>
-              <span className="font-medium text-red-500">-$24</span>
-            </div>
-            <hr className="my-2" />
-            <div className="flex justify-between items-center text-lg font-bold">
-              <span>Total:</span>
-              <span>$357.99 USD</span>
-            </div>
-          </div>
-          <div className="w-full  border border-gray-200 rounded-md p-4">
-            <h3 className="text-lg font-semibold mb-4">Card Totals</h3>
-            <div className="flex justify-between items-center mb-2">
-              <span>Sub-total:</span>
-              <span className="font-medium">$382</span>
-            </div>
-            <div className="flex justify-between items-center mb-2">
-              <span>Discount:</span>
-              <span className="font-medium text-red-500">-$24</span>
-            </div>
-            <hr className="my-2" />
-            <div className="flex justify-between items-center text-lg font-bold">
-              <span>Total:</span>
-              <span>$357.99 USD</span>
-            </div>
-          </div>
+    <div className="min-h-screen bg-green-50 py-10">
+      <div className="container mx-auto">
+        <Typography
+          variant="h3"
+          className="text-center mb-6 font-bold bg-white h-20 py-5 rounded-lg shadow-md"
+          style={{ marginTop: "-20px" }}
+        >
+          Checkout
+        </Typography>
+        <div className="flex justify-center p-2 bg-white my-4 rounded-lg">
+          selected Items
         </div>
-
-        {/* checkout section */}
-        {/* Delivery */}
-        <div className='flex flex-col md:flex-row  p-8 gap-8'>
-          <div className="w-full border border-gray-200  p-4">
-            <h3 className="text-xl font-bold mb-4 ">Delivery</h3>
-            <form>
+        <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
+          {/* Shopping Card */}
+          <Card className="p-6 col-span-2 shadow-lg">
+            <Typography variant="h5" className="mb-4 font-semibold">
+             Shipping Details
+            </Typography>
+            <form className="my-2">
               <div className="grid gap-4">
                 {/* <select className="w-full border-gray-300 rounded-md p-2">
                   <option value="Turkey">Turkey</option>
                 </select> */}
                 <div className="grid grid-cols-2 gap-4">
-                  <input
+                  <Input
                     type="text"
                     name={"firstName"}
                     value={firstName}
                     onChange={(e)=>formChange(e)}
                     placeholder="First name"
-                    className="border-2 border-gray-300 rounded-md p-2"
+                    color="teal" 
+                    label="FirstName"
+                    className=" rounded-md p-2"
                   />
-                  <input
+                  <Input
                     type="text"
                     name={"lastName"}
                     value={lastName}
                     onChange={(e)=>formChange(e)}
                     placeholder="Last name"
-                    className="border-2 border-gray-300 rounded-md p-2"
+                    color="teal" 
+                    label="LastName"
+                    className=" rounded-md p-2"
                   />
                 </div>
-                <input
+                <Input
                   type="text"   
                   name={"addressLine1"}
                   value={addressLine1}
                   onChange={(e)=>formChange(e)}
                   placeholder="Address Line 1"
-                  className="border-2 border-gray-300 rounded-md p-2"
+                  color="teal" 
+                  label="Address Line 1"
+                  className=" rounded-md p-2"
                 />
-                <input
+                {errors.addressLine1 && <p className="error text-red-400 text-sm">{errors.addressLine1}</p>}
+                <Input
                   type="text"   
                   name={"addressLine2"}
                   value={addressLine2}
                   onChange={(e)=>formChange(e)}
                   placeholder="Address Line 2"
-                  className="border-2 border-gray-300 rounded-md p-2"
+                  color="teal" 
+                    label="Address Line 2"
+                    className=" rounded-md p-2"
                 />
                 <div className="grid grid-cols-2 gap-4">
-                  <input
+                  <Input
                     type="text"
                     name={"city"}
                     value={city}
                     onChange={(e)=>formChange(e)}
                     placeholder="City"
-                    className="border-2 border-gray-300 rounded-md p-2"
+                    color="teal" 
+                    label="City"
+                    className=" rounded-md p-2"
                   />
-                  <input
+                 
+                  <Input
                     type="text"
                     name={"postalCode"}
                     value={postalCode}
                     onChange={(e)=>formChange(e)}
                     placeholder="Postal code"
-                    className=" border-2 border-gray-300 rounded-md p-2"
+                    color="teal" 
+                    label="Postal Code"
+                    className=" rounded-md p-2"
                   />
 
                 </div>
-                <input
+                {errors.postalCode && <p className="error text-red-400 text-sm">{errors.postalCode}</p>}
+                {errors.city && <p className="error text-red-400 text-sm">{errors.city}</p>}
+                <Input
                   type="text"
                   name={"phone"}
                   value={phone}
                   onChange={(e)=>formChange(e)}
                   placeholder="Phone"
-                  className="border-2 border-gray-300 rounded-md p-2"
+                  color="teal" 
+                    label="Mobile Phone"
+                    className=" rounded-md p-2"
                 />
-                <input
+                {errors.phone && <p className="error text-red-400 text-sm">{errors.phone}</p>}
+                <Input
                   type="text"
                   name={"note"}
                   value={note}
                   onChange={(e)=>formChange(e)}
                   placeholder="Note"
-                  className="border-2 border-gray-300 rounded-md p-2"
+                  color="teal" 
+                    label="Note"
+                    className=" rounded-md p-2"
                 />
               </div>
             </form>
-            <hr className="my-4" />
-            <h4 className="text-md font-bold mb-2">Shipping method</h4>
             <div className="flex flex-col   my-4 ">
               <label className="flex font-semibold bg-gray-200 rounded-t-md items-center justify-between pb-2  pt-4 px-4 ">
                 <div >
-                  <input type="radio" name="shipping" className="mr-2" />
+                  <input type="radio" name="shipping" className="mr-2" 
+                  value={0}
+                  checked={shipping === 0} // Bind selected value
+                  onChange={(e) => handleShippingChange(parseFloat(e.target.value))}/>
                   30 Days
                 </div>
                 <span>Free</span>
               </label>
               <label className="flex  font-semibold items-center bg-gray-200 justify-between pt-2 pb-4 px-4 rounded-t-none rounded-b-lg">
                 <div>
-                  <input type="radio" name="shipping" className="mr-2" />
+                  <input type="radio" name="shipping" className="mr-2" 
+                  value={400}
+                  checked={shipping === 400} // Bind selected value
+                  onChange={(e) => handleShippingChange(parseFloat(e.target.value))}/>
                   Fast shipping | 2 Days
                 </div>
-                <span>$24.99</span>
+                <span>400.00</span>
               </label>
             </div>
-            <button onClick={onPurchase} disabled={orderPlaced} className={`mt-8  ${orderPlaced ? "bg-gray-200" : "bg-green-400"}  font-semibold w-full py-2 rounded-md' type="submit`}>
+            <PlaceOrderButton
+                onPlaceOrder={onPlaceOrder}
+                state={orderPlaced ? true :false}
+                className="py-2"
+              />
+            {/* <button onClick={onPurchase} disabled={orderPlaced} className={`mt-8  ${orderPlaced ? "bg-gray-200" : "bg-green-400"}  font-semibold w-full py-2 rounded-md' type="submit`}>
             {orderPlaced ? "Placed Order" : "Place Order"}
-            </button>
-          </div>
-          {/* Secure Checkout */}
-          <div className="w-full border border-gray-200  p-4">
-            <h3 className="text-xl font-bold mb-4">Secure Checkout</h3>
-            <div className='flex flex-col gap-8'>
+            </button> */}
+          </Card>
+          {/* Cart Total */}
+          <Card className="p-6 col-span-2 shadow-lg">
+            <Typography variant="h5" className="mb-4 font-semibold">
+              Card Details
+            </Typography>
+            <div className="flex justify-between">
+              <Typography>Sub-total:</Typography>
+              <Typography>Rs.{itemTotal.toFixed(2)}</Typography>
+            </div>
+            <div className="flex justify-between my-2">
+              <Typography>Shipping:</Typography>
+              <Typography>Rs.{shipping.toFixed(2)}</Typography>
+            </div>
+            <hr className="mt-3 mb-3 border-gray-400" />
+            <div className="flex justify-between font-bold">
+              <Typography>Total:</Typography>
+              <Typography>Rs. {(shipping + itemTotal).toFixed(2) }</Typography>
+            </div>
+            <div className="mt-8">
+            
+            </div>
             <div>
-            <div className="w-full  border-b-2 border-gray-200 pb-4">
-            <div className="flex justify-between items-center mb-2">
-              <span>Item total:</span>
-              <span className="font-medium">Rs. {itemTotal}</span>
-            </div>
-            <div className="flex justify-between items-center mb-2">
-              <span>Shipping:</span>
-              <span className="font-medium text-red-500">Rs. {shipping}</span>
-            </div>
-            <hr className="my-2" />
-            <div className="flex my-4 justify-between items-center text-lg font-bold">
-              <span>Total:</span>
-              <span>Rs. {(shipping + itemTotal) }</span>
-            </div>
-          </div>
-          </div>
-          <div>
             {clientSecret && (
               <Elements stripe={stripePromise} options={stripeOptions}>
                 <PaymentElementComponent />
               </Elements>
             )}
             </div>
-            </div>
-          </div>
+
+            {/* Coupon Code */}
+            
+          </Card>
         </div>
       </div>
-      </div>
+    </div>
   );
-}
+};
 
-export default Checkout;
+export default CheckoutPage;

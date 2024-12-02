@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { PaymentElement, useStripe, useElements, CardElement } from '@stripe/react-stripe-js';
+import axios from 'axios';
+import PurchaseOrderButton from '../Buttons/PurchaseOrderButton';
 
 function PaymentElementComponent() {
   const stripe = useStripe();
   const elements = useElements();
-  const [clientSecret, setClientSecret] = useState('pi_3QLgzsJ0oMtKGRpA0pVLyOYC_secret_0IZSnAlNHuBK213looev8m7ZB');
   const [loading, setLoading] = useState(false);
 
   const product = {
@@ -27,7 +28,7 @@ function PaymentElementComponent() {
   // }, [product]);
 
 
-  const handleSubmit = async (event) => {
+  const onPurchaseOrder = async (event) => {
     event.preventDefault();
 
     if (!stripe || !elements) return;
@@ -35,32 +36,62 @@ function PaymentElementComponent() {
     setLoading(true);
 
     // Confirm the payment
-    const { error } = await stripe.confirmPayment({
+    const { error,paymentIntent } = await stripe.confirmPayment({
       elements,
       confirmParams: {
-        return_url: 'http://localhost:3000/payment-success', // Replace with your success page
+        // return_url: 'http://localhost:3000/payment-success', // Replace with your success page
       },
+      redirect: 'if_required'
     });
 
     setLoading(false);
 
     if (error) {
-      console.error('Payment failed:', error.message);
-      alert(`Payment failed: ${error.message}`);
-    } else {
-      alert('Payment succeeded!');
+      if (error.type === 'invalid_request_error' && error.payment_intent) {
+        // Check if the payment has already succeeded
+        const intentStatus = error.payment_intent.status;
+        if (intentStatus === 'succeeded') {
+          alert('You have already completed this payment!');
+        } else {
+          alert(`Payment failed: ${error.message}`);
+        }
+      } else {
+        console.error('Payment failed:', error.message);
+        alert(`Payment failed: ${error.message}`);
+      }
+    } else if (paymentIntent) {
+      console.log(paymentIntent);
+      
+      if (paymentIntent.status === 'succeeded') {
+        const data=await axios
+        .post('http://localhost:3006/api/payment/confirmPayment', 
+          {
+            paymentIntent,
+            "orderId":2
+          })
+          console.log(data);
+          
+        alert('Payment succeeded!');
+      } else {
+        alert(`Payment status: ${paymentIntent.status}`);
+      }
     }
   };
 
   return (
-    <div>PaymentElement
-          <h1>Stripe Payment</h1>
-      <form onSubmit={handleSubmit}>
+    <div>
+      <form className='my-4'>
         <PaymentElement />
-        <button type="submit" disabled={!stripe || loading}>
-          {loading ? 'Processing...' : 'Pay'}
-        </button>
+       
+        {/* <button className='mt-8 bg-green-300 w-full py-2 rounded-md' type="submit " disabled={!stripe || loading}>
+          {loading ? 'Processing...' : 'Purchase'}
+        </button> */}
       </form>
+      <PurchaseOrderButton
+                onPurchaseOrder={onPurchaseOrder}
+                title={loading ? 'PROCESSING...' : 'PURCHSE ORDER'}
+                className="my-2"
+      />
     </div>
   )
 }
