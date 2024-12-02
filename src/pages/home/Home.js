@@ -5,6 +5,7 @@ import CheckoutPage from "../Shopping Cart/CheckoutPage";
 import Hero from "./Hero";
 import BrowseCarousal from "../category/BrowseCarousal";
 import FAQ from "./FAQ";
+import LatestProducts from "./LatestProducts";
 
 const Home = () => {
 
@@ -26,8 +27,11 @@ const Home = () => {
         </Link>
         {/* <CheckoutPage /> */}
       {/* </div> */} 
-      <div className="place-content-center h-full">
+      <div className="place-content-center shadow-sm">
         <Hero/>
+      </div>
+      <div className="pb-6 mb-10">
+        <LatestProducts />
       </div>
       <div className="flex place-content-center justify-center items-center pt-0 pb-10">
         <h1 className="text-3xl align-center justify-center">C A T E G O R I E S</h1>
