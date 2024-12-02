@@ -15,6 +15,7 @@ const Home = () => {
       <Link to={'/auth/signIn'}> <Button >Sign In</Button></Link>
       <Link to={'/browse'}> <Button>Browse Page</Button></Link>
       <Link to={'/browse'}> <Button>Browse Page</Button></Link>
+      <Link to={'/cart/:userId'}> <Button>Cart Page</Button></Link>
 
       <br />
       <br />
@@ -26,7 +27,7 @@ const Home = () => {
         {" "}
         <Button>Sign In</Button>
       </Link>
-      <CheckoutPage />
+      {/* <CheckoutPage /> */}
     </div>
   );
 };

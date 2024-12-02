@@ -14,10 +14,10 @@ const CheckoutPage = () => {
       <div className="container mx-auto">
         <h3 className="text-center mb-6 text-xl font-bold">Checkout Page</h3>
         {/* Display selected items */}
-        <div className="selected-items">
-          {selectedItems.length > 0 ? (
+        <div>
+          {selectedItems?.length > 0 ? (
             <ul>
-              {selectedItems.map((item, index) => (
+              {selectedItems?.map((item, index) => (
                 <li key={index}>
                   <span>
                     {item.name} - {item.quantity}
