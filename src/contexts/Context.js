@@ -10,8 +10,8 @@ export const Provider = ({ children }) => {
   useEffect(() => {
       const currnetPath = window.location.pathname;
 
-      console.log('PathName',currnetPath);
-      console.log("Categories",categories);
+      // console.log('PathName',currnetPath);
+      // console.log("Categories",categories);
 
       if(currnetPath === '/browse'){
           setSelectedCategory(0);
