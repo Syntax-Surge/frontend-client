@@ -1,7 +1,7 @@
 import './App.css';
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import { Provider } from './contexts/Context';
-import Home from './pages/Home';
+import Home from './pages/home/Home';
 import SignUp from './pages/auth pages/signUp';
 import SignIn from './pages/auth pages/signIn'; 
 import ChangePassword from './pages/auth pages/chnagePassword';
@@ -14,6 +14,7 @@ import CartPage from "./pages/Shopping Cart/CartPage";
 
 // border border-black
 import Profile from './pages/profile/Profile';
+import Footer from './components/layout/footer';
 
 
 function App() {
@@ -44,6 +45,7 @@ function App() {
             <Route path='/browse' element={<BrowseByCategory/>} />
           </Route>
         </Routes>
+        <Footer />
       </BrowserRouter>
     </Provider>
   );
