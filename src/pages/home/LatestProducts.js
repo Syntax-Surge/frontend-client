@@ -34,7 +34,7 @@ const LatestProducts = () => {
                             <p>Easiest way to healthy life by buying our latest plants </p>
                         </div>
                         <div className='py-6'>
-                            <Link to={'/item'}><Button className='rounded-full bg-[#C1DCDC] text-blue-gray-900 hover:drop-shadow-xl hover:scale-110 hover:duration-200'>See All</Button></Link>
+                            <Link to={'/shop'}><Button className='rounded-full bg-[#C1DCDC] text-blue-gray-900 hover:drop-shadow-xl hover:scale-110 hover:duration-200'>See All</Button></Link>
                         </div>
                     </div>
 
