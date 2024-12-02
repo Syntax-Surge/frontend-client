@@ -5,8 +5,17 @@ import CheckoutPage from "./Shopping Cart/CheckoutPage";
 
 const Home = () => {
   return (
-    <div className="flex justify-center items-center space-x-8">
-      <Button>Hello</Button>
+    <div className='flex justify-center items-center space-x-8'>
+      
+      <Button>Hello</Button> 
+      <Link to={'/myaccount'}>    <Button > Account</Button></Link>
+      <br/>
+      <br/>
+      <Link to={'/auth/signup'}>    <Button > Sign up</Button></Link>
+      <Link to={'/auth/signIn'}> <Button >Sign In</Button></Link>
+      <Link to={'/browse'}> <Button>Browse Page</Button></Link>
+      <Link to={'/browse'}> <Button>Browse Page</Button></Link>
+      <Link to={'/cart/:userId'}> <Button>Cart Page</Button></Link>
 
       <br />
       <br />
@@ -18,7 +27,7 @@ const Home = () => {
         {" "}
         <Button>Sign In</Button>
       </Link>
-      <CheckoutPage />
+      {/* <CheckoutPage /> */}
     </div>
   );
 };
