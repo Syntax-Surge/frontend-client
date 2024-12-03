@@ -16,7 +16,8 @@ export function Discount() {
       <Chip
         variant='ghost'
         value='Discounts'
-        className={`rounded-full py-[8px] px-[16px] font-poppins font-normal ${
+        className={`rounded-full py-[8px] px-[16px] font-poppins font-normal 
+          sm:text-sm sm:px-[40px] ${
           isActive ? 'bg-[rgba(74,156,128,0.5)]' : 'bg-[rgba(213,213,213,0.41)]'
         }`}
         style={{ textTransform: 'none' }}

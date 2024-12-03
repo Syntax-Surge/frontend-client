@@ -11,7 +11,7 @@ const Navbar = () => {
   const [searchActive, setSearchActive] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(true);
   return (
-    <nav className="bg-white border-b-4 border-green-100 p-4 flex justify-between items-center h-20">
+    <nav className="bg-white p-4 flex justify-between items-center h-20">
       <div className="flex items-center ml-7">
       <img
             src={require("../../images/Planty's Logo.png")}

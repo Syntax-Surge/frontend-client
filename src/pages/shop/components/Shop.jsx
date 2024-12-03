@@ -12,7 +12,7 @@ function ShopSec() {
         const ItemsData = await axios.get(
           'http://localhost:5000/api/v1/products/'
         );
-        // console.log('data fetched', ItemsData);
+       
         setItems(ItemsData.data.rows);
       } catch (error) {
         console.error('error fetching data', error);
@@ -20,11 +20,17 @@ function ShopSec() {
     };
     getItemData();
   }, []);
-  // console.log(items);
+  
 
   return (
-    <div className=''>
-      <div className='grid grid-cols-2 mt-4 gap-2 justify-items-center m-2'>
+    <div className='w-full'>
+      <div
+        className='grid grid-cols-2 mt-4 gap-2 justify-items-center m-2 mx-4
+      sm:mx-10 sm:gap-y-10 sm:mt-8
+      md:gap-x-6
+      lg:grid-cols-3
+      2xl:grid-cols-4'
+      >
         {items.map((item) => (
           <PlantItemCard
             key={item.id}
@@ -35,24 +41,8 @@ function ShopSec() {
             price={item.unitPrice}
           />
         ))}
-        {/* {items.id} */}
-        {/* {items.pictureLocation}
-        <img src={`${items.pictureLocation}`} alt={`image`} /> */}
       </div>
-      {/* <div className='grid grid-cols-2 gap-3 justify-center mt-4'>
-        <PlantItemCard />
-        <PlantItemCard />
-        <PlantItemCard />
-        <PlantItemCard />
-        <PlantItemCard />
-      </div> */}
-      {/* <div className='grid grid-cols-2 gap-3 justify-items-center mt-4'>
-        <div className='h-[200px] w-[200px] bg-black'></div>
-        <div className='h-[200px] w-[200px] bg-black'></div>
-        <div className='h-[200px] w-[200px] bg-black'></div>
-        <div className='h-[200px] w-[200px] bg-black'></div>
-        <div className='h-[200px] w-[200px] bg-black'></div>
-      </div> */}
+
       {/* <DefaultPagination /> */}
     </div>
   );
