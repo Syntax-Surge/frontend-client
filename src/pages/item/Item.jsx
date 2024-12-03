@@ -102,7 +102,7 @@ function Item() {
             {/* Reviews */}
             <div className=''>
               <Reviews
-                onCardClick={handleShowReviewDetail}
+                // onCardClick={handleShowReviewDetail}
                 productId={id}
                 handleRate={handleRate}
               />

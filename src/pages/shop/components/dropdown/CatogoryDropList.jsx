@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Menu,
   MenuHandler,
@@ -8,23 +8,43 @@ import {
   Checkbox,
 } from '@material-tailwind/react';
 import { ChevronDownIcon } from '@heroicons/react/24/outline';
+import axios from 'axios';
 
-export function CatogoryDropList() {
+export function CatogoryDropList({ onSelectionChange }) {
   const [openMenu, setOpenMenu] = useState(false);
+  const [catagories, setCatagories] = useState([]);
+  const [selectedCategories, setSelectedCategories] = useState([]);
 
-  // Array of menu items
-  const menuItems = [
-    'Menu Item 1',
-    'Menu Item 2',
-    'Menu Item 3',
-    'Menu Item 4',
-    'Menu Item 5',
-    'Menu Item 6',
-  ];
+  useEffect(() => {
+    const getCatagory = async () => {
+      try {
+        const catagories = await axios.get(
+          `http://localhost:5000/api/v1/categories`
+        );
+        // console.log(catagories.data);
+
+        setCatagories(catagories.data);
+      } catch (error) {
+        console.error('error fetching data', error);
+      }
+    };
+    getCatagory();
+  }, []);
+
+  const handleCheckboxChange = (categoryId) => {
+    const updatedSelection = selectedCategories.includes(categoryId)
+      ? selectedCategories.filter((id) => id !== categoryId) // Remove if already selected
+      : [...selectedCategories, categoryId]; // Add if not selected
+
+    setSelectedCategories(updatedSelection);
+    onSelectionChange(updatedSelection); // Send to parent component
+  };
+
+  //  console.log(catagories);
 
   return (
     <Menu
-    className='md:hidden'
+      className='md:hidden'
       open={openMenu}
       handler={setOpenMenu}
       animate={{
@@ -52,7 +72,7 @@ export function CatogoryDropList() {
         </Button>
       </MenuHandler>
       <MenuList className='text-xs font-poppins'>
-        {menuItems.map((item, index) => (
+        {catagories.map((item, index) => (
           <MenuItem key={index} className='p-0'>
             <label
               htmlFor={`item-${index}`}
@@ -63,8 +83,10 @@ export function CatogoryDropList() {
                 id={`item-${index}`}
                 containerProps={{ className: 'p-0' }}
                 className='hover:before:content-none'
+                checked={selectedCategories.includes(item.id)}
+                onChange={() => handleCheckboxChange(item.id)}
               />
-              {item}
+              {item.name}
             </label>
           </MenuItem>
         ))}
