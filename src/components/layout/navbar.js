@@ -39,11 +39,11 @@ const Navbar = () => {
           Categories
           </a>
         </li>
-        {/* <li>
+        <li>
           <a href="#about" className="hover:text-green-500">
-            About
+            Reviews
           </a>
-        </li> */}
+        </li>
       </ul>
 
       <div className="flex space-x-6 text-gray-700 items-center mr-7">

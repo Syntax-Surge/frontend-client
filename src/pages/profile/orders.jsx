@@ -27,7 +27,7 @@ const Orders = () => {
   const TABLE_HEAD = ["Number ID", "Number of items", "Status", "Price"];
   const [open, setOpen] = React.useState(false);
   const [openReview, setOpenReview] = React.useState(false);
-  const [userId, setUserId] = useState(2);
+  const [userId, setUserId] = useState(1);
   const [user, setUser] = useState();
   const [selectId, setSelectId] = useState();
   const [refreshDetails, setRefreshDetails] = useState(false);
@@ -97,25 +97,33 @@ const Orders = () => {
 
   };
 
-  const handleOpenReview = async (productName, unitPrice, productLocation, productId) => {
+  const CloseReview = () => {
+    setOpenReview(!openReview);
+  }
+
+  const handleOpenReview = async (productName, unitPrice, productLocation, reviewProductId) => {
     console.log(productName);
     console.log(unitPrice);
     console.log(productLocation);
     setReviewProductName(productName);
     setReviewUnitPrice(unitPrice);
     setReviewProductLocation(productLocation);
-    setReviewProductId(productId);
+    setReviewProductId(reviewProductId);
+
+    try {
+      console.log(userId);
+      
+      const ReviewByUser = await axios.get(`http://localhost:5000/api/v1/reviews/getReviewsForUser?userId=${userId}&productId=${reviewProductId}`);
+      setReviewsByUser(ReviewByUser.data);
+      console.log(ReviewByUser.data);
+    } catch (error) {
+      console.log(error);
+      
+    }
 
 
-    const ReviewsByUser = await axios.get(`http://localhost:5000/api/v1/getReviewsForUser`);
-    setReviewsByUser(ReviewsByUser);
-      console.log(ReviewsByUser.data);
-
-
-
-
-
-
+    
+    // setOpen(!open);
     setOpenReview(!openReview);
   };
 
@@ -137,18 +145,18 @@ const Orders = () => {
     setOpenReview(!openReview);
   };
 
-  const groupByOrderId = (data) => {
-    return data.reduce((acc, curr) => {
-      // Ensure we're grouping based on orderId
-      if (!acc[curr.orderId]) {
-        acc[curr.orderId] = []; // Initialize an array for each orderId
-      }
-      acc[curr.orderId].push(curr); // Push the current item into the corresponding group
-      return acc;
-    }, {});
-  };
+  // const groupByOrderId = (data) => {
+  //   return data.reduce((acc, curr) => {
+  //     // Ensure we're grouping based on orderId
+  //     if (!acc[curr.orderId]) {
+  //       acc[curr.orderId] = []; // Initialize an array for each orderId
+  //     }
+  //     acc[curr.orderId].push(curr); // Push the current item into the corresponding group
+  //     return acc;
+  //   }, {});
+  // };
 
-  const groupedData = groupByOrderId(orders);
+  // const groupedData = groupByOrderId(orders);
 
   return (
     <div>
@@ -183,7 +191,7 @@ const Orders = () => {
                 const numberOfItems = Object.keys(orderId?.items).length;
 
                 // Get the grouped data for this order
-                const items = groupedData[orderId];
+                // const items = groupedData[orderId];
 
                 return (
                   <tr
@@ -272,7 +280,7 @@ const Orders = () => {
                     </div>
                     <div className='flex flex-col'>
                       <p className='mb-3'>{item?.productName}</p>
-                      <p>{item?.unitPrice}</p>
+                      <p>Price: {item?.unitPrice}</p>
                     </div>
                     <div>
                       <p>Quantity : {item?.quantity}</p>
@@ -317,13 +325,14 @@ const Orders = () => {
                 min='0'
                 className="w-full bg-transparent placeholder:text-gray-400 text-gray-700 text-sm border border-gray-300 rounded-md px-3 py-2 transition duration-300 ease focus:outline focus:border-gray-600 hover:border-gray-600 shadow-sm focus:shadow"
                 onChange={(e) => setRating(e.target.value)}
-                disabled={ReviewsByUser && !editMode}      
+                disabled={ReviewsByUser && !editMode}   
+                placeholder={ReviewsByUser?.rating}   
               />
             </div>
           </div>
           <div>
             <div className="w-96">
-              <Textarea label="Enter Review" disabled={ReviewsByUser && !editMode} onChange={(e) => SetUserReview(e.target.value)} />
+              <Textarea placeholder={ReviewsByUser?.description} disabled={ReviewsByUser && !editMode} onChange={(e) => SetUserReview(e.target.value)} />
             </div>
           </div>
         </DialogBody>
@@ -331,7 +340,7 @@ const Orders = () => {
           <Button
             variant="text"
             color="red"
-            onClick={handleOpenReview}
+            onClick={CloseReview}
             className="mr-1"
           >
             <span>Cancel</span>
