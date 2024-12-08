@@ -26,7 +26,7 @@ const CategoryDetail = () => {
           <h2>{selectedCategory.name}</h2>
         </div>
         <div className="text-base font-poppins mb-6 h-32 text-[#1E1E1E]">
-          <p>Details about {selectedCategory.description}</p>
+          <p>{selectedCategory.description}</p>
         </div>
         <div>
           <h2 className="text-2xl font-semibold">{selectedCategory.count}</h2>

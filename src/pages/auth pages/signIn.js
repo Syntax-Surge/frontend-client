@@ -11,6 +11,8 @@ import { ToastContainer, toast } from 'react-toastify';
 import "react-toastify/dist/ReactToastify.css";
 import axios from 'axios';
 import { Link, useNavigate } from "react-router-dom";
+import { CookiesProvider, useCookies } from 'react-cookie';
+// import cookie from 'react-cookie'
 
 const SignIn = () => {
   const [firstName , setFirstName] = useState('')
@@ -26,28 +28,30 @@ const SignIn = () => {
   const [passwordError , setPasswordError] = useState(false)
   const [isLoadingSignIn, setIsLoadingSignIn] = useState(false);
   const navigate = useNavigate();
-
+  // const [cookies, setCookie, removeCookie] = useCookies(['connect.sid']);
+  
+  
   const userData = {
-  "username": email,
-  "password": password,
+    "username": email,
+    "password": password,
   }
-
+  
   const validateEmail = (email) => {
     console.log(
       "email validation :" +
-        String(email)
-          .toLowerCase()
-          .match(
-            /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-          )
-    );
-    return String(email)
+      String(email)
       .toLowerCase()
       .match(
         /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-      );
+      )
+    );
+    return String(email)
+    .toLowerCase()
+    .match(
+      /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+    );
   };
-
+  
   const  signInWithGoogle = () => {
     window.location.href = "http://localhost:4000/login/federated/google";
   }
@@ -55,7 +59,7 @@ const SignIn = () => {
     window.location.href = "http://localhost:4000/login/federated/facebook";
   }
   const  signIn = async() => {
-   
+    
     if(email === "" ||  !validateEmail(email) ){
       setEmailError(true)
     }
@@ -68,34 +72,49 @@ const SignIn = () => {
     else{
       setPasswordError(false)
     }
-   setIsLoadingSignIn(true)
-   await  axios.post("http://localhost:4000/login" , userData).then( (res) => {
-     console.log('res.status', res.status)
-     
-     if(res.status === 200){
-        setIsLoadingSignIn(false)
-        toast.success('Successfully Signed In', {
-          position: "top-center",
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
-          });
-          setTimeout(() => {
-            navigate("/");
-          }, 2000); // Slightly longer than `autoClose` duration to ensure the toast is fully visible
-        
-          // navigate('/')
-        }
-        console.log('res : ', res.data)
-      }).catch( (error) => {
-        setIsLoadingSignIn(false)
-        console.log('error', error.response.data.msg)
-        toast.error(`${error.response.data.msg} !`, {
-          position: "top-center",
+    setIsLoadingSignIn(true)
+    try {
+      await  axios.post("http://localhost:4000/login" , userData ,  { withCredentials: true }).then( (res) => {
+        console.log('res ', res)
+        console.log('Response Headers:', res.headers);
+        console.log("document.cookie :"  , document.cookie);
+        if(res.status === 200){
+          setIsLoadingSignIn(false)
+          toast.success('Successfully Signed In', {
+            position: "top-center",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+           });
+            setTimeout(() => {
+               navigate("/");
+             }, 2000); // Slightly longer than `autoClose` duration to ensure the toast is fully visible
+            
+            // navigate('/')
+          }
+          // console.log('res : ', res.data)
+        }).catch( (error) => {
+          setIsLoadingSignIn(false)
+          console.log('error', error.response.data.msg)
+          toast.error(`${error.response.data.msg} !`, {
+            position: "top-center",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+         progress: undefined,
+         theme: "light",
+        }); 
+      })
+    } catch (error) {
+      console.log('Error :', Error);
+      toast.error(`Error occured !`, {
+        position: "top-center",
         autoClose: 5000,
         hideProgressBar: false,
         closeOnClick: true,
@@ -103,9 +122,76 @@ const SignIn = () => {
         draggable: true,
         progress: undefined,
         theme: "light",
-        }); 
-    })
+      }); 
+    }
   }
+  
+  // console.log('coooooooooooookie :', cookies)
+
+  // const sessionId = cookies['connect.sid'];
+
+  // console.log('Session ID:', sessionId);
+
+  
+  const test = async () => {
+    try {
+      const response = await axios.post("http://localhost:4000/admin/inside", {}, { withCredentials: true });
+      console.log('Response Headers:', response.headers);
+      console.log('Response :', response);
+      if (response.status === 200) {
+        // Logout successful
+        // Clear local authentication state
+        // localStorage.removeItem('userId'); // Or any other relevant state
+        // Redirect to login page
+        // window.location.href = '/login'; 
+      } else {
+        // Handle non-200 responses (e.g., 400, 500)
+        throw new Error(`access failed with status: ${response.status}`); 
+      }
+    } catch (error) {
+      console.error('Logout error:', error);
+      toast.error(`Error Occured..Try again!`, {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    }
+  };
+  const logout = async () => {
+    try {
+      const response = await axios.post("http://localhost:4000/logout", {}, { withCredentials: true });
+      console.log('Response Headers:', response.headers);
+      console.log('Response :', response);
+      if (response.status === 200) {
+        // Logout successful
+        // Clear local authentication state
+        // localStorage.removeItem('userId'); // Or any other relevant state
+        // Redirect to login page
+        // window.location.href = '/login'; 
+      } else {
+        // Handle non-200 responses (e.g., 400, 500)
+        throw new Error(`Logout failed with status: ${response.status}`); 
+      }
+    } catch (error) {
+      console.error('Logout error:', error);
+      toast.error(`Error Occured..Try again!`, {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    }
+  };
+
   return (
     <> 
      <ToastContainer
@@ -298,7 +384,8 @@ theme="light"
                   {/* <span className="text-sm font-medium text-gray-900">Sign in with Google</span> */}
                 </Button>
               </div>
-
+              <Button onClick={ () => logout()}>Sign out</Button> 
+        
               {/* <Button type="button" className="text-white bg-[#4285F4] hover:bg-[#4285F4]/90 focus:ring-4 focus:outline-none focus:ring-[#4285F4]/50 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-[#4285F4]/55 me-2 mb-2">
     <svg class="w-4 h-4 me-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 18 19">
     <path fill-rule="evenodd" d="M8.842 18.083a8.8 8.8 0 0 1-8.65-8.948 8.841 8.841 0 0 1 8.8-8.652h.153a8.464 8.464 0 0 1 5.7 2.257l-2.193 2.038A5.27 5.27 0 0 0 9.09 3.4a5.882 5.882 0 0 0-.2 11.76h.124a5.091 5.091 0 0 0 5.248-4.057L14.3 11H9V8h8.34c.066.543.095 1.09.088 1.636-.086 5.053-3.463 8.449-8.4 8.449l-.186-.002Z" clip-rule="evenodd"/>

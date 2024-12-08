@@ -15,19 +15,17 @@ import CartPage from "./pages/Shopping Cart/CartPage";
 // border border-black
 import Profile from './pages/profile/Profile';
 import Footer from './components/layout/footer';
+import MainLayout from './layout/main_layout';
+import AuthLayout from './layout/outlet';
 
 
 function App() {
   return (
     <Provider>
       <BrowserRouter>
-      <Routes>
-        <Route path="/auth/signup" element={<SignUp />} />
-        <Route path="/auth/signIn" element={<SignIn />} />
-        </Routes>
-        <Navbar />
+        {/* <Navbar /> */}
         <Routes>
-          <Route>
+          <Route element={<MainLayout/>}>
             <Route path='/' element={<Home />} />
             <Route path='/shop' element={<Shop showHeroAndFilter={true} />} />
             <Route path='/item/:id' element={<Item  />} />
@@ -36,16 +34,25 @@ function App() {
           </Route>
 
 
-          <Route>
-            {/* <Route path="/auth/signup" element={<SignUp/>} />
-            <Route path="/auth/signIn" element={<SignIn/>} /> */}
+          <Route element={<AuthLayout/>}>
+            <Route path="/auth/signup" element={<SignUp/>} />
+            <Route path="/auth/signIn" element={<SignIn/>} />
+            <Route path="/auth/user/reset/:id" element={<ChangePassword/>} />
+            <Route path="/auth/user/forgot-password" element={<ForgotPassword/>} />
+
+            <Route path='/browse' element={<BrowseByCategory/>} />
+          </Route>
+          
+          <Route element={<AuthLayout/>}>
+            <Route path="/auth/signup" element={<SignUp/>} />
+            <Route path="/auth/signIn" element={<SignIn/>} />
             <Route path="/auth/user/reset/:id" element={<ChangePassword/>} />
             <Route path="/auth/user/forgot-password" element={<ForgotPassword/>} />
 
             <Route path='/browse' element={<BrowseByCategory/>} />
           </Route>
         </Routes>
-        <Footer />
+        {/* <Footer /> */}
       </BrowserRouter>
 
     </Provider>
