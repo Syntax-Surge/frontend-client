@@ -114,9 +114,7 @@ const Home = () => {
         initial={{ opacity:0, y: 100 }}
         transition={{ duration: 0.5 }}
         className="bg-[#C1DCDC] drop-shadow-md shadow-lg py-6 mt-15 mb-10">
-        <Link to='/browse'>
           <BrowseCarousal />
-        </Link>
       </motion.div>
 
       <motion.div
