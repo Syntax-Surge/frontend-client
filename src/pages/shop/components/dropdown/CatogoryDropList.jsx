@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import {
   Menu,
   MenuHandler,
@@ -8,23 +8,52 @@ import {
   Checkbox,
 } from '@material-tailwind/react';
 import { ChevronDownIcon } from '@heroicons/react/24/outline';
+import axios from 'axios';
+import { FilterContext } from '../../../../contexts/filterContext';
 
 export function CatogoryDropList() {
+  const { filteredCategory, setFilteredCategory } = useContext(FilterContext);
   const [openMenu, setOpenMenu] = useState(false);
+  const [catagories, setCatagories] = useState([]);
 
-  // Array of menu items
-  const menuItems = [
-    'Menu Item 1',
-    'Menu Item 2',
-    'Menu Item 3',
-    'Menu Item 4',
-    'Menu Item 5',
-    'Menu Item 6',
-  ];
+  // get categories
+  useEffect(() => {
+    const getCatagory = async () => {
+      try {
+        const catagories = await axios.get(
+          `http://localhost:5000/api/v1/categories`
+        );
+
+        setCatagories(catagories.data);
+      } catch (error) {
+        console.error('error fetching data', error);
+      }
+    };
+    getCatagory();
+  }, []);
+
+  //handle selected categories
+  const handleCheckboxChange = async (categoryId, subcategories = []) => {
+    // Determine whether the category is currently selected
+    const isCategorySelected = filteredCategory.includes(categoryId);
+
+    // the category and its subcategories
+    const idsToToggle = [
+      categoryId,
+      ...subcategories.map((subcategory) => subcategory.id),
+    ];
+
+    // Create the updated selection
+    const updatedSelection = isCategorySelected
+      ? filteredCategory.filter((id) => !idsToToggle.includes(id))
+      : [...filteredCategory, ...idsToToggle];
+
+    setFilteredCategory(updatedSelection);
+  };
 
   return (
     <Menu
-    className='md:hidden'
+      className='md:hidden'
       open={openMenu}
       handler={setOpenMenu}
       animate={{
@@ -42,7 +71,8 @@ export function CatogoryDropList() {
           sm:text-sm sm:px-[40px]'
           onClick={() => setOpenMenu(!openMenu)}
         >
-          Catagories
+
+          Categories
           <ChevronDownIcon
             strokeWidth={2.5}
             className={`h-3.5 w-3.5 transition-transform ${
@@ -52,20 +82,48 @@ export function CatogoryDropList() {
         </Button>
       </MenuHandler>
       <MenuList className='text-xs font-poppins'>
-        {menuItems.map((item, index) => (
+        {catagories.map((category, index) => (
           <MenuItem key={index} className='p-0'>
-            <label
-              htmlFor={`item-${index}`}
-              className='flex cursor-pointer items-center gap-2 p-2'
-            >
-              <Checkbox
-                ripple={false}
-                id={`item-${index}`}
-                containerProps={{ className: 'p-0' }}
-                className='hover:before:content-none'
-              />
-              {item}
-            </label>
+            <div className='flex flex-col'>
+              <label
+                htmlFor={`category-${index}`}
+                className='flex cursor-pointer items-center gap-2 p-2 font-semibold'
+              >
+                <Checkbox
+                  ripple={false}
+                  id={`category-${index}`}
+                  containerProps={{ className: 'p-0' }}
+                  className='hover:before:content-none'
+                  checked={filteredCategory.includes(category.id)}
+                  onChange={() =>
+                    handleCheckboxChange(category.id, category.subcategories)
+                  }
+                />
+                {category.name}
+              </label>
+              {/* Subcategories */}
+              {category.subcategories?.length > 0 && (
+                <div className='pl-6'>
+                  {category.subcategories.map((subcategory, subIndex) => (
+                    <label
+                      htmlFor={`subcategory-${index}-${subIndex}`}
+                      className='flex cursor-pointer items-center gap-2 p-2'
+                      key={subIndex}
+                    >
+                      <Checkbox
+                        ripple={false}
+                        id={`subcategory-${index}-${subIndex}`}
+                        containerProps={{ className: 'p-0' }}
+                        className='hover:before:content-none'
+                        checked={filteredCategory.includes(subcategory.id)}
+                        onChange={() => handleCheckboxChange(subcategory.id)}
+                      />
+                      {subcategory.name}
+                    </label>
+                  ))}
+                </div>
+              )}
+            </div>
           </MenuItem>
         ))}
       </MenuList>

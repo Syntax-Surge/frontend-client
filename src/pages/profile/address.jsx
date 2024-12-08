@@ -13,6 +13,7 @@ import axios from 'axios';
 const Address = () => {
     const [editMode, setEditMode] = useState("false");
     const [user, setUser] = useState("");
+    const [address, setAddress] = useState("");
     const [refreshDetails, setRefreshDetails] = useState(false);
     const [userId, setUserId] = useState(20);
     const [error, setError] = useState("")
@@ -38,16 +39,35 @@ const Address = () => {
             }
             console.log(dataShipping);
 
-            const res = await axios.put(`http://localhost:4000/api/v1/users/updateshipping?id=${userId}`, dataShipping);
-            console.log(res.data);
-            setRefreshDetails((prevState) => !prevState);
-            setLine1("");
-            SetLine2("");
-            setCity("");
-            setState("");
-            setPostalCode("");
-            setCountry("");
-            setEditMode("false");
+            if (address) {
+                const res = await axios.put(`http://localhost:4000/api/v1/users/updateshipping?id=${userId}`, dataShipping);
+                console.log(res.data);
+                setRefreshDetails((prevState) => !prevState);
+                setLine1("");
+                SetLine2("");
+                setCity("");
+                setState("");
+                setPostalCode("");
+                setCountry("");
+                setEditMode("false");
+                console.log("address present");
+                
+            } else {
+                const res = await axios.post(`http://localhost:4000/api/v1/users/createAddress?id=${userId}`, dataShipping);
+                console.log(res.data);
+                setRefreshDetails((prevState) => !prevState);
+                setLine1("");
+                SetLine2("");
+                setCity("");
+                setState("");
+                setPostalCode("");
+                setCountry("");
+                setEditMode("false");
+                console.log("address not present");
+            }
+
+
+
 
 
         } catch (err) {
@@ -69,34 +89,34 @@ const Address = () => {
 
 
 
-    const submitBilling = async () => {
-        try {
-            let dataBilling = {
-                line1: line1,
-                line2: line2,
-                city: city,
-                state: state,
-                postalCode: postalCode,
-                country: country
-            }
-            console.log(dataBilling);
+    // const submitBilling = async () => {
+    //     try {
+    //         let dataBilling = {
+    //             line1: line1,
+    //             line2: line2,
+    //             city: city,
+    //             state: state,
+    //             postalCode: postalCode,
+    //             country: country
+    //         }
+    //         console.log(dataBilling);
 
-            const res = await axios.put(`http://localhost:4000/api/v1/users/updatebilling?id=${userId}`, dataBilling);
-            console.log(res.data);
-            setRefreshDetails((prevState) => !prevState);
-            setLine1("");
-            SetLine2("");
-            setCity("");
-            setState("");
-            setPostalCode("");
-            setCountry("");
-            setEditMode("false");
+    //         const res = await axios.put(`http://localhost:4000/api/v1/users/updatebilling?id=${userId}`, dataBilling);
+    //         console.log(res.data);
+    //         setRefreshDetails((prevState) => !prevState);
+    //         setLine1("");
+    //         SetLine2("");
+    //         setCity("");
+    //         setState("");
+    //         setPostalCode("");
+    //         setCountry("");
+    //         setEditMode("false");
 
-        } catch (err) {
-            console.log(err.message);
+    //     } catch (err) {
+    //         console.log(err.message);
 
-        }
-    }
+    //     }
+    // }
 
 
 
@@ -113,7 +133,25 @@ const Address = () => {
             }
         };
 
+
         userData();
+    }, [refreshDetails]);
+
+    useEffect(() => {
+        const addressData = async () => {
+            //   setLoading(true); // Start loading
+            try {
+                const address = await axios.get(`http://localhost:4000/api/v1/users/getAddressById?id=${userId}`); // Replace with your API endpoint
+                setAddress(address.data); // Save response data to state
+                console.log(address);
+
+            } catch (err) {
+                setError(err.message); // Handle errors
+            }
+        };
+
+
+        addressData();
     }, [refreshDetails]);
 
     const renderContent = () => {
@@ -125,7 +163,7 @@ const Address = () => {
                         Address
                     </div>
                     <div className='flex'>
-                        <Card className=" w-96 mr-10">
+                        {/* <Card className=" w-96 mr-10">
                             <CardBody>
                                 <div className='flex  h-8'>
                                     <Typography variant="h6" color="blue-gray" className="mb-2 w-96">
@@ -149,7 +187,7 @@ const Address = () => {
                                     {user?.billingState}, {user?.billingPostalCode}, {user?.billingCountry}
                                 </Typography>
                             </CardBody>
-                        </Card>
+                        </Card> */}
                         <Card className=" w-96">
                             <CardBody>
                                 <div className='flex  h-8'>
@@ -167,10 +205,10 @@ const Address = () => {
                                     (+1) 234 567 890
                                 </Typography>
                                 <Typography>
-                                    345 {user?.shippingAddressLine1}, {user?.shippingAddressLine2}, {user?.shippingCity}
+                                    345 {address?.shippingAddressLine1}, {address?.shippingAddressLine2}, {address?.shippingCity}
                                 </Typography>
                                 <Typography>
-                                    {user?.shippingState}, {user?.shippingPostalCode}, {user?.shippingCountry}
+                                    {address?.shippingState}, {address?.shippingPostalCode}, {address?.shippingCountry}
                                 </Typography>
                             </CardBody>
                         </Card>
@@ -222,7 +260,7 @@ const Address = () => {
                                 color="gray"
                                 className="mt-2 flex items-center gap-1 font-normal"
                             >Lane</Typography>
-                            <div className='pt-2 pb-2  ml-16 w-7/12'><Input label={user?.shippingAddressLine1} onChange={(e) => setLine1(e.target.value)}/></div>
+                            <div className='pt-2 pb-2  ml-16 w-7/12'><Input label={address?.shippingAddressLine1} onChange={(e) => setLine1(e.target.value)} /></div>
                         </div>
                         <div className=' flex justify-between'>
                             <Typography
@@ -230,7 +268,7 @@ const Address = () => {
                                 color="gray"
                                 className="mt-2 flex items-center gap-1 font-normal"
                             >Lane 02</Typography>
-                            <div className='pt-2 pb-2  ml-16 w-7/12'><Input label={user?.shippingAddressLine2} onChange={(e) => SetLine2(e.target.value)}/></div>
+                            <div className='pt-2 pb-2  ml-16 w-7/12'><Input label={address?.shippingAddressLine2} onChange={(e) => SetLine2(e.target.value)} /></div>
                         </div>
                         <div className=' flex justify-between'>
                             <Typography
@@ -238,7 +276,7 @@ const Address = () => {
                                 color="gray"
                                 className="mt-2 flex items-center gap-1 font-normal"
                             >City</Typography>
-                            <div className='pt-2 pb-2  ml-16 w-7/12'><Input label={user?.shippingCity} onChange={(e) => setCity(e.target.value)}/></div>
+                            <div className='pt-2 pb-2  ml-16 w-7/12'><Input label={address?.shippingCity} onChange={(e) => setCity(e.target.value)} /></div>
                         </div>
                         <div className=' flex justify-between'>
                             <Typography
@@ -246,7 +284,7 @@ const Address = () => {
                                 color="gray"
                                 className="mt-2 flex items-center gap-1 font-normal"
                             >State</Typography>
-                            <div className='pt-2 pb-2  ml-16 w-7/12'><Input label={user?.shippingState} onChange={(e) => setState(e.target.value)}/></div>
+                            <div className='pt-2 pb-2  ml-16 w-7/12'><Input label={address?.shippingState} onChange={(e) => setState(e.target.value)} /></div>
                         </div>
                         <div className=' flex justify-between'>
                             <Typography
@@ -254,7 +292,7 @@ const Address = () => {
                                 color="gray"
                                 className="mt-2 flex items-center gap-1 font-normal"
                             >Postal Code</Typography>
-                            <div className='pt-2 pb-2  ml-16 w-7/12'><Input label={user?.shippingPostalCode} onChange={(e) => setPostalCode(e.target.value)}/></div>
+                            <div className='pt-2 pb-2  ml-16 w-7/12'><Input label={address?.shippingPostalCode} onChange={(e) => setPostalCode(e.target.value)} /></div>
                         </div>
                         <div className=' flex justify-between'>
                             <Typography
@@ -262,7 +300,7 @@ const Address = () => {
                                 color="gray"
                                 className="mt-2 flex items-center gap-1 font-normal"
                             >Country</Typography>
-                            <div className='pt-2 pb-2  ml-16 w-7/12'><Input label={user?.shippingCountry} onChange={(e) => setCountry(e.target.value)}/></div>
+                            <div className='pt-2 pb-2  ml-16 w-7/12'><Input label={address?.shippingCountry} onChange={(e) => setCountry(e.target.value)} /></div>
                         </div>
                         <div className=' flex mt-5'>
                             <Button onClick={() => submitShipping()}>Save Changes</Button><Button className='ml-5' onClick={() => cancel()}>Cancel</Button>
@@ -271,101 +309,102 @@ const Address = () => {
                 </div>
             )
 
-        } else if (editMode === "billing") {
-            return (
-                <div>
-                    <div className='w-7/12'>
-                        <div className=' text-3xl font-bold w-2/4 font-sans'>
-                            Billing Details
-                        </div>
-                        <div className=' flex justify-between'>
-                            <Typography
-                                variant="h6"
-                                color="gray"
-                                className="mt-2 flex items-center gap-1 font-normal"
-                            >First Name</Typography>
-                            <div className='pt-2 pb-4 ml-16 w-7/12 '><Input label={user?.firstName} /></div>
-                        </div>
-                        <div className=' flex justify-between'>
-                            <Typography
-                                variant="h6"
-                                color="gray"
-                                className="mt-2 flex items-center gap-1 font-normal"
-                            >Last Name</Typography>
-                            <div className='pt-2 pb-4  ml-16 w-7/12'><Input label={user?.lastName} /></div>
-                        </div>
-                        <div className=' flex justify-between'>
-                            <Typography
-                                variant="h6"
-                                color="gray"
-                                className="mt-2 flex items-center gap-1 font-normal"
-                            >Contact Number</Typography>
-                            <div className='pt-2 pb-4  ml-16 w-7/12'><Input label="Contact Number" /></div>
-                        </div>
-                        <div className=' flex justify-between'>
-                            <Typography
-                                variant="h6"
-                                color="gray"
-                                className="mt-2 flex items-center gap-1 font-normal"
-                            >No.</Typography>
-                            <div className='pt-2 pb-2  ml-16 w-7/12'><Input label={user?.no} /></div>
-                        </div>
-                        <div className=' flex justify-between'>
-                            <Typography
-                                variant="h6"
-                                color="gray"
-                                className="mt-2 flex items-center gap-1 font-normal"
-                            >Lane</Typography>
-                            <div className='pt-2 pb-2  ml-16 w-7/12'><Input label={user?.billingAddressLine1} onChange={(e) => setLine1(e.target.value)}/></div>
-                        </div>
-                        <div className=' flex justify-between'>
-                            <Typography
-                                variant="h6"
-                                color="gray"
-                                className="mt-2 flex items-center gap-1 font-normal"
-                            >Lane 02</Typography>
-                            <div className='pt-2 pb-2  ml-16 w-7/12'><Input label={user?.billingAddressLine2} onChange={(e) => SetLine2(e.target.value)}/></div>
-                        </div>
-                        <div className=' flex justify-between'>
-                            <Typography
-                                variant="h6"
-                                color="gray"
-                                className="mt-2 flex items-center gap-1 font-normal"
-                            >City</Typography>
-                            <div className='pt-2 pb-2  ml-16 w-7/12'><Input label={user?.billingCity} onChange={(e) => setCity(e.target.value)}/></div>
-                        </div>
-                        <div className=' flex justify-between'>
-                            <Typography
-                                variant="h6"
-                                color="gray"
-                                className="mt-2 flex items-center gap-1 font-normal"
-                            >State</Typography>
-                            <div className='pt-2 pb-2  ml-16 w-7/12'><Input label={user?.billingState} onChange={(e) => setState(e.target.value)}/></div>
-                        </div>
-                        <div className=' flex justify-between'>
-                            <Typography
-                                variant="h6"
-                                color="gray"
-                                className="mt-2 flex items-center gap-1 font-normal"
-                            >Postal Code</Typography>
-                            <div className='pt-2 pb-2  ml-16 w-7/12'><Input label={user?.billingPostalCode} onChange={(e) => setPostalCode(e.target.value)}/></div>
-                        </div>
-                        <div className=' flex justify-between'>
-                            <Typography
-                                variant="h6"
-                                color="gray"
-                                className="mt-2 flex items-center gap-1 font-normal"
-                            >Country</Typography>
-                            <div className='pt-2 pb-2  ml-16 w-7/12'><Input label={user?.billingCountry} onChange={(e) => setCountry(e.target.value)}/></div>
-                        </div>
-                        <div className=' flex mt-5'>
-                            <Button onClick={() => submitBilling()}>Save Changes</Button><Button className='ml-5' onClick={() => cancel()}>Cancel</Button>
-                        </div>
-                    </div>
-                </div>
-            )
-
         }
+        // else if (editMode === "billing") {
+        //     return (
+        //         <div>
+        //             <div className='w-7/12'>
+        //                 <div className=' text-3xl font-bold w-2/4 font-sans'>
+        //                     Billing Details
+        //                 </div>
+        //                 <div className=' flex justify-between'>
+        //                     <Typography
+        //                         variant="h6"
+        //                         color="gray"
+        //                         className="mt-2 flex items-center gap-1 font-normal"
+        //                     >First Name</Typography>
+        //                     <div className='pt-2 pb-4 ml-16 w-7/12 '><Input label={user?.firstName} /></div>
+        //                 </div>
+        //                 <div className=' flex justify-between'>
+        //                     <Typography
+        //                         variant="h6"
+        //                         color="gray"
+        //                         className="mt-2 flex items-center gap-1 font-normal"
+        //                     >Last Name</Typography>
+        //                     <div className='pt-2 pb-4  ml-16 w-7/12'><Input label={user?.lastName} /></div>
+        //                 </div>
+        //                 <div className=' flex justify-between'>
+        //                     <Typography
+        //                         variant="h6"
+        //                         color="gray"
+        //                         className="mt-2 flex items-center gap-1 font-normal"
+        //                     >Contact Number</Typography>
+        //                     <div className='pt-2 pb-4  ml-16 w-7/12'><Input label="Contact Number" /></div>
+        //                 </div>
+        //                 <div className=' flex justify-between'>
+        //                     <Typography
+        //                         variant="h6"
+        //                         color="gray"
+        //                         className="mt-2 flex items-center gap-1 font-normal"
+        //                     >No.</Typography>
+        //                     <div className='pt-2 pb-2  ml-16 w-7/12'><Input label={user?.no} /></div>
+        //                 </div>
+        //                 <div className=' flex justify-between'>
+        //                     <Typography
+        //                         variant="h6"
+        //                         color="gray"
+        //                         className="mt-2 flex items-center gap-1 font-normal"
+        //                     >Lane</Typography>
+        //                     <div className='pt-2 pb-2  ml-16 w-7/12'><Input label={user?.billingAddressLine1} onChange={(e) => setLine1(e.target.value)}/></div>
+        //                 </div>
+        //                 <div className=' flex justify-between'>
+        //                     <Typography
+        //                         variant="h6"
+        //                         color="gray"
+        //                         className="mt-2 flex items-center gap-1 font-normal"
+        //                     >Lane 02</Typography>
+        //                     <div className='pt-2 pb-2  ml-16 w-7/12'><Input label={user?.billingAddressLine2} onChange={(e) => SetLine2(e.target.value)}/></div>
+        //                 </div>
+        //                 <div className=' flex justify-between'>
+        //                     <Typography
+        //                         variant="h6"
+        //                         color="gray"
+        //                         className="mt-2 flex items-center gap-1 font-normal"
+        //                     >City</Typography>
+        //                     <div className='pt-2 pb-2  ml-16 w-7/12'><Input label={user?.billingCity} onChange={(e) => setCity(e.target.value)}/></div>
+        //                 </div>
+        //                 <div className=' flex justify-between'>
+        //                     <Typography
+        //                         variant="h6"
+        //                         color="gray"
+        //                         className="mt-2 flex items-center gap-1 font-normal"
+        //                     >State</Typography>
+        //                     <div className='pt-2 pb-2  ml-16 w-7/12'><Input label={user?.billingState} onChange={(e) => setState(e.target.value)}/></div>
+        //                 </div>
+        //                 <div className=' flex justify-between'>
+        //                     <Typography
+        //                         variant="h6"
+        //                         color="gray"
+        //                         className="mt-2 flex items-center gap-1 font-normal"
+        //                     >Postal Code</Typography>
+        //                     <div className='pt-2 pb-2  ml-16 w-7/12'><Input label={user?.billingPostalCode} onChange={(e) => setPostalCode(e.target.value)}/></div>
+        //                 </div>
+        //                 <div className=' flex justify-between'>
+        //                     <Typography
+        //                         variant="h6"
+        //                         color="gray"
+        //                         className="mt-2 flex items-center gap-1 font-normal"
+        //                     >Country</Typography>
+        //                     <div className='pt-2 pb-2  ml-16 w-7/12'><Input label={user?.billingCountry} onChange={(e) => setCountry(e.target.value)}/></div>
+        //                 </div>
+        //                 <div className=' flex mt-5'>
+        //                     <Button onClick={() => submitBilling()}>Save Changes</Button><Button className='ml-5' onClick={() => cancel()}>Cancel</Button>
+        //                 </div>
+        //             </div>
+        //         </div>
+        //     )
+
+        // }
     }
 
 
