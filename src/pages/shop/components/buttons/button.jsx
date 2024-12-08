@@ -2,7 +2,7 @@ import React from "react";
 import { Button } from "@material-tailwind/react";
 
 const Buttons = ({name, onClick, loading,color , isActive}) => {
-  console.log(isActive);
+  // console.log(isActive);
   
   return (
     <div>

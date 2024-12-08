@@ -8,6 +8,8 @@ export const Provider = ({ children }) => {
   const [selectedCategory, setSelectedCategory] = useState(null); 
   const [ selectedItems, setSelectedItems] = useState(null); 
   const [categories, setCategories] = useState([]);
+  const [filteredCategory, setFilteredCategory] = useState(null);
+  const [searched, setSearched] = useState('');
 
   useEffect(() => {
       const currnetPath = window.location.pathname;
@@ -24,19 +26,21 @@ export const Provider = ({ children }) => {
 
   return (
     <Context.Provider
-      value={
-        {
-          // return states here
-          selectedCategory,
-          setSelectedCategory,
-          categories,
-          setCategories,        
-          puchaseItems,
-          setPurchaseItems, 
-          selectedItems, 
-          setSelectedItems
-        }
-      }
+      value={{
+        // return states here
+        selectedCategory,
+        setSelectedCategory,
+        categories,
+        setCategories,
+        puchaseItems,
+        setPurchaseItems,
+        selectedItems,
+        setSelectedItems,
+        filteredCategory,
+        setFilteredCategory,
+        searched,
+        setSearched,
+      }}
     >
       {children}
     </Context.Provider>

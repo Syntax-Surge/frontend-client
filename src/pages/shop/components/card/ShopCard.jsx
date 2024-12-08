@@ -10,13 +10,21 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
-export function PlantItemCard({ id, name, description, imageUrl, price }) {
-  
+export function PlantItemCard({
+  id,
+  name,
+  description,
+  imageUrl,
+  price,
+  weight,
+}) {
   const navigate = useNavigate();
 
   const handleCardClick = () => {
     navigate(`/item/${id}`);
   };
+
+  // console.log(price, weight);
 
   return (
     <Card
