@@ -12,8 +12,10 @@ import ApplyCouponButton from "../../components/Buttons/ApplyCouponButton";
 import CheckoutButton from "../../components/Buttons/CheckoutButton";
 import axios from "axios";
 import { useCustomContext } from "../../contexts/Context.js";
+import { useNavigate } from "react-router-dom";
 
 const CartPage = () => {
+  const navigate = useNavigate();
   const [cartItems, setCartItems] = useState([]);
   const [selectedItems, setSelectedItems] = useState([]);
   const { puchaseItems, setPurchaseItems } = useCustomContext();
@@ -35,13 +37,19 @@ const CartPage = () => {
   //     price: 200,
   //   },
   // ]);
-  const userId = 4; //
-  const url = "http://localhost:8080/api";
+  const userId = 1; //
+  const url = "http://localhost:3006/api";
 
   const handleCheckout = () => {
     setPurchaseItems(selectedCartItems);  
-    console.log("Selected Items for Checkout:", selectedCartItems);
+    console.log("Selected Items", selectedCartItems);
+    setTimeout(() => {
+      navigate('/checkoutPage');
+    }, 0);
   };
+  useEffect(() => {
+    console.log("Updated Purchase Items:", puchaseItems);
+  }, [puchaseItems]);
 
   // Fetch cart items from the backend
   const fetchCartItems = async () => {

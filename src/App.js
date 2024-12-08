@@ -1,6 +1,7 @@
 import './App.css';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { Provider } from './contexts/Context';
+import Checkout from './pages/Checkout';
 import Home from './pages/home/Home';
 import SignUp from './pages/auth pages/signUp';
 import SignIn from './pages/auth pages/signIn';
@@ -10,7 +11,8 @@ import Shop from './pages/shop/Shop';
 import Item from './pages/item/Item';
 import BrowseByCategory from './pages/category/BrowseByCategory';
 import Navbar from './components/layout/navbar';
-import CartPage from './pages/Shopping Cart/CartPage';
+import CartPage from "./pages/Shopping Cart/CartPage";
+import CheckoutPage from "./pages/Shopping Cart/CheckoutPage";
 
 // border border-black
 import Profile from './pages/profile/Profile';
@@ -28,6 +30,9 @@ function App() {
         <Navbar />
         <Routes>
           <Route>
+            <Route path="/" element={<Home/>} />
+            <Route path="/checkout" element={<Checkout/>} />
+            <Route path="/checkoutPage" element={<CheckoutPage/>} />
             <Route path='/' element={<Home />} />
 
             <Route path='/shop' element={<Shop showHeroAndFilter={true} />} />
