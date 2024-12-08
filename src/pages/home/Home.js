@@ -12,11 +12,11 @@ const Home = () => {
 
   return (
     <div>
+      <Link to={'/auth/signIn'}> <Button >Sign In</Button></Link>
       {/* <div className="flex place-content-center items-center border-b-4 border-green-100">
         <Button>Hello</Button> 
         <Link to={'/myaccount'}>    <Button > Account</Button></Link>
         <Link to={'/auth/signup'}>    <Button > Sign up</Button></Link>
-        <Link to={'/auth/signIn'}> <Button >Sign In</Button></Link>
         <Link to={'/browse'}> <Button>Browse Page</Button></Link>
         <Link to={'/browse'}> <Button>Browse Page</Button></Link>
         <Link to={'/cart/:userId'}> <Button>Cart Page</Button></Link>
