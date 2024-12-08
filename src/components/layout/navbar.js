@@ -5,36 +5,43 @@ import { PiShoppingCartThin } from "react-icons/pi";
 import { PiPottedPlantLight } from "react-icons/pi";
 import { useState } from "react";
 import SearchBar from "../searchbar/seachbar";
+import { Button } from "@material-tailwind/react";
 
 const Navbar = () => {
   const [searchActive, setSearchActive] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(true);
   return (
-    <nav className="bg-white border-b-4 border-green-100 p-4 flex justify-between items-center h-20">
+    <nav className="bg-white p-4 flex justify-between items-center h-20">
       <div className="flex items-center ml-7">
-        <PiPottedPlantLight />
+      <img
+            src={require("../../images/Planty's Logo.png")}
+            alt=""
+            className="mb-2"
+          />
+        {/* <PiPottedPlantLight /> */}
         {/* <img src="/logo.svg" alt="PlantyX Logo" className="w-8 h-8 mr-2" /> */}
-        <span className="text-lg font-thin">Planty'x</span>
+        {/* <span className="text-lg font-thin">Planty'x</span> */}
       </div>
 
       <ul className="flex space-x-8 text-gray-700">
         <li>
-          <a href="#plants" className="hover:text-green-500">
-            Plants
+          <a href="/" className="hover:text-green-500">
+            Home
           </a>
         </li>
         <li>
           <a href="#for-offices" className="hover:text-green-500">
-            For Offices
+            Shop
           </a>
         </li>
         <li>
           <a href="#plant-care" className="hover:text-green-500">
-            Plant Care
+          Categories
           </a>
         </li>
         <li>
           <a href="#about" className="hover:text-green-500">
-            About
+            Reviews
           </a>
         </li>
       </ul>
@@ -51,12 +58,17 @@ const Navbar = () => {
           </button>
         )}
         {/* <a href="#search" className="hover:text-green-500"><IoIosSearch /></a> */}
-        <a href="#user" className="hover:text-green-500">
-          <CgProfile />
-        </a>
-        <a href="#cart" className="hover:text-green-500">
-          <PiShoppingCartThin />
-        </a>
+
+        {isLoggedIn ? (
+          <>
+            <a href="/myaccount" className="hover:text-green-500">
+              <CgProfile />
+            </a>
+            <a href="#cart" className="hover:text-green-500">
+              <PiShoppingCartThin />
+            </a>
+          </>
+        ) : <Button>Sign In</Button>}
       </div>
     </nav>
   );

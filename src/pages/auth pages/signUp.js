@@ -24,6 +24,7 @@ const SignUp = () => {
   const [emailError , setEmailError] = useState(false)
   const [contactNoError , setContactNoError] = useState(false)
   const [passwordError , setPasswordError] = useState(false)
+  const [isLoadingSignUp, setIsLoadingSignUp] = useState(false);
 
   const userData = {
     "firstName": firstName,
@@ -75,7 +76,9 @@ const SignUp = () => {
     else{
       setLastNameError(false)
     }
+    console.log('email ', email )
     if(email === "" ||  !validateEmail(email) ){
+      // alert("validateEmail : ",!validateEmail(email))
       setEmailError(true)
     }
     else{
@@ -87,10 +90,11 @@ const SignUp = () => {
     else{
       setPasswordError(false)
     }
-   
-    axios.post("http://localhost:4000/api/signUp" , userData).then( (res) => {
+   setIsLoadingSignUp(true)
+    axios.post("http://localhost:4000/signUp" , userData).then( (res) => {
       console.log('res.status', res.status)
       if(res.status === 200){
+        setIsLoadingSignUp(false)
         toast.success('Successfully Signed up', {
           position: "top-center",
           autoClose: 5000,
@@ -100,12 +104,13 @@ const SignUp = () => {
           draggable: true,
           progress: undefined,
           theme: "light",
-          });
+        });
       }
       console.log('res : ', res.data)
     }).catch( (error) => {
+      setIsLoadingSignUp(false)
       console.log('error', error)
-      toast.error('Sign up not successful !', {
+      toast.error(`${error.response.data.msg} !`, {
         position: "top-center",
         autoClose: 5000,
         hideProgressBar: false,
@@ -131,10 +136,9 @@ draggable
 pauseOnHover
 theme="light" 
 />
-      <div className="flex my-10 justify-center ">
-        <div className=" w-1/2 flex  justify-center items-center  h-full mx-10">
-        <div className="w-full">
-
+      <div className="flex my-10 justify-center   h-1/2">
+        <div className=" w-1/2 flex  justify-center items-center  h-1/2 mx-10">
+        <div className="w-full ">
           <img
             src={require("../../images/Planty's Logo.png")}
             alt=""
@@ -176,8 +180,9 @@ theme="light"
                     </Typography>
                     <div>
                     <Input
+                    
                       size="lg"
-                      placeholder="name@mail.com"
+                      placeholder="First Name"
                       className=" !border-t-blue-gray-200 focus:!border-t-gray-900"
                       labelProps={{
                         className: "before:content-none after:content-none",
@@ -196,7 +201,7 @@ theme="light"
                     <div>
                     <Input
                       size="lg"
-                      placeholder="name@mail.com"
+                      placeholder="Last Name"
                       className=" !border-t-blue-gray-200 focus:!border-t-gray-900"
                       labelProps={{
                         className: "before:content-none after:content-none",
@@ -214,7 +219,7 @@ theme="light"
                 <div>
                 <Input
                   size="lg"
-                  placeholder="name@mail.com"
+                  placeholder="Email"
                   className=" !border-t-blue-gray-200 focus:!border-t-gray-900"
                   labelProps={{
                     className: "before:content-none after:content-none",
@@ -235,7 +240,7 @@ theme="light"
                 <div>
                 <Input
                   size="lg"
-                  placeholder="name@mail.com"
+                  placeholder="Contact Number"
                   className=" !border-t-blue-gray-200 focus:!border-t-gray-900"
                   labelProps={{
                     className: "before:content-none after:content-none",
@@ -303,8 +308,10 @@ theme="light"
                 }
                 containerProps={{ className: "-ml-2.5" }}
               /> */}
-              <Button className="mt-6 bg-[#3FAEAE]" fullWidth
-              onClick={ (e) => {console.log('userData', userData);signUp()}}>
+              <Button className="mt-6 bg-[#3FAEAE] flex justify-center" fullWidth
+              onClick={ (e) => {console.log('userData', userData);signUp()}}
+              loading={isLoadingSignUp}
+              >
                 sign up
               </Button>
               <Typography
@@ -389,11 +396,11 @@ theme="light"
               </div>
 
               {/* <Button type="button" className="text-white bg-[#4285F4] hover:bg-[#4285F4]/90 focus:ring-4 focus:outline-none focus:ring-[#4285F4]/50 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:focus:ring-[#4285F4]/55 me-2 mb-2">
-    <svg class="w-4 h-4 me-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 18 19">
-    <path fill-rule="evenodd" d="M8.842 18.083a8.8 8.8 0 0 1-8.65-8.948 8.841 8.841 0 0 1 8.8-8.652h.153a8.464 8.464 0 0 1 5.7 2.257l-2.193 2.038A5.27 5.27 0 0 0 9.09 3.4a5.882 5.882 0 0 0-.2 11.76h.124a5.091 5.091 0 0 0 5.248-4.057L14.3 11H9V8h8.34c.066.543.095 1.09.088 1.636-.086 5.053-3.463 8.449-8.4 8.449l-.186-.002Z" clip-rule="evenodd"/>
-    </svg>
-    Sign in with Google
-    </Button> */}
+              <svg class="w-4 h-4 me-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 18 19">
+              <path fill-rule="evenodd" d="M8.842 18.083a8.8 8.8 0 0 1-8.65-8.948 8.841 8.841 0 0 1 8.8-8.652h.153a8.464 8.464 0 0 1 5.7 2.257l-2.193 2.038A5.27 5.27 0 0 0 9.09 3.4a5.882 5.882 0 0 0-.2 11.76h.124a5.091 5.091 0 0 0 5.248-4.057L14.3 11H9V8h8.34c.066.543.095 1.09.088 1.636-.086 5.053-3.463 8.449-8.4 8.449l-.186-.002Z" clip-rule="evenodd"/>
+              </svg>
+              Sign in with Google
+              </Button> */}
               {/* <Typography color="gray" className="mt-4 text-center font-normal">
                 Already have an account?{" "}
                 <a href="#" className="font-medium text-gray-900">

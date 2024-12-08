@@ -1,21 +1,70 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Rate from './Rate';
 import { FullReview } from './FullReview';
 import { useState } from 'react';
+import axios from 'axios';
 
-function Reviews({ onCardClick }) {
-  
+function Reviews({ onCardClick, productId, handleRate }) {
+  const [TopReviews, setTopReviews] = useState([]);
   const handleCardTop = () => {
     onCardClick();
   };
 
+  useEffect(() => {
+    const TopTwoReviews = async () => {
+      try {
+        const topTwoReviews = await axios.get(
+          'http://localhost:5000/api/v1/reviews/two',
+          {
+            headers: {
+              id: productId,
+            },
+          }
+        );
+        setTopReviews(topTwoReviews.data);
+      } catch (error) {
+        console.error(error.message);
+      }
+    };
+    TopTwoReviews();
+
+  }, []);
+
+  const { avgRating, topTwoReviews } = TopReviews;
+
+  handleRate(avgRating);
+
+  if (!Array.isArray(topTwoReviews)) {
+    return <div>Loading reviews...</div>;
+  }
+
+ 
+  // console.log(topTwoReviews[0]);
+
+  const updatedReviews = topTwoReviews.map((review) => {
+    const dateOnly = new Date(review.createdAt).toISOString().split('T')[0];
+
+    return {
+      ...review, 
+      dateOnly, 
+    };
+  });
+
+  // console.log(updatedReviews);
+
+
+  // console.log(topTwoReviews);
+
   return (
-    <div className='bg-white my-5 pb-3 shadow-sm' onClick={handleCardTop}>
+    <div
+      className='bg-white my-5 pb-3 shadow-sm sm:px-4 '
+      // onClick={handleCardTop}
+    >
       {/* top  */}
-      <div className='flex justify-between px-5 pt-5'>
-        <div className='text-lg font-medium'>review</div>
+      <div className='flex justify-between px-5 pt-5 md:px-32 lg:px-40 xl:px-52 2xl:px-72'>
+        <div className='text-lg font-medium sm:text-xl'>Customer Review</div>
         <div className='mt-1.5 flex'>
-          <Rate showText={false} />
+          <Rate showText={false} rate={avgRating} />
           <svg
             xmlns='http://www.w3.org/2000/svg'
             fill='none'
@@ -32,11 +81,21 @@ function Reviews({ onCardClick }) {
           </svg>
         </div>
       </div>
-      <div>
-        <FullReview />
-      </div>
-      <div>
-        <FullReview />
+
+      <div className='md:flex md:mt-6 justify-around'>
+        {updatedReviews.length > 0 ? (
+          updatedReviews.map((review) => (
+            <FullReview
+              key={review.id}
+              userId={review.userId}
+              description={review.description}
+              date={review.dateOnly}
+              rate={review.rating}
+            />
+          ))
+        ) : (
+          <div>No reviews available</div>
+        )}
       </div>
     </div>
   );
