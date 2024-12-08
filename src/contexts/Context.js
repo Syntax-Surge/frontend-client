@@ -4,7 +4,7 @@ const Context = createContext();
 
 export const Provider = ({ children }) => {
   // Add global states here
-  const [puchaseItems, setPurchaseItems] = useState([]);
+  const [puchaseItems, setPurchaseItems] = useState(null);
   const [selectedCategory, setSelectedCategory] = useState(null); 
   const [ selectedItems, setSelectedItems] = useState(null); 
   const [categories, setCategories] = useState([]);

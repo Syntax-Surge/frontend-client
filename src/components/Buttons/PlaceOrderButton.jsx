@@ -4,7 +4,7 @@ import { Button } from "@material-tailwind/react";
 const PlaceOrderButton = ({ onPlaceOrder, state }) => {
   const stateColor = "rgba(112, 128, 144, 0.7)";
   const onCansel=()=>{
-    window.location.reload();
+    window.history.back()
   } // Gray-green mix color for disabled
 
   return (
