@@ -7,12 +7,76 @@ import BrowseCarousal from "../category/BrowseCarousal";
 import FAQ from "./FAQ";
 import LatestProducts from "./LatestProducts";
 import { motion } from 'framer-motion';
+import { toast } from "react-toastify";
+import axios from "axios";
 
 const Home = () => {
+ 
+  const logout = async () => {
+    try {
+      const response = await axios.post("http://localhost:4000/logout", {}, { withCredentials: true });
+      console.log('Response Headers:', response.headers);
+      if (response.status === 200) {
+        console.log('Response :', response);
+        // Logout successful
+        // Clear local authentication state
+        // localStorage.removeItem('userId'); // Or any other relevant state
+        // Redirect to login page
+        // window.location.href = '/login'; 
+      } else {
+        // Handle non-200 responses (e.g., 400, 500)
+        throw new Error(`Logout failed with status: ${response.status}`); 
+      }
+    } catch (error) {
+      console.error('Logout error:', error);
+      toast.error(`Error Occured..Try again!`, {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    }
+  };
+ 
+  const test = async () => {
+    try {
+      const response = await axios.post("http://localhost:4000/admin/inside", {}, { withCredentials: true });
+      console.log('Response Headers:', response.headers);
+      console.log('Response :', response);
+      if (response.status === 200) {
+        // Logout successful
+        // Clear local authentication state
+        // localStorage.removeItem('userId'); // Or any other relevant state
+        // Redirect to login page
+        // window.location.href = '/login'; 
+      } else {
+        // Handle non-200 responses (e.g., 400, 500)
+        throw new Error(`access failed with status: ${response.status}`); 
+      }
+    } catch (error) {
+      console.error('Logout error:', error);
+      toast.error(`Error Occured..Try again!`, {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    }
+  };
 
   return (
     <div>
       <Link to={'/auth/signIn'}> <Button >Sign In</Button></Link>
+      <Button onClick={ () => logout()}>Sign out</Button> 
+      <Button onClick={ () => test()}>Test admin route</Button> 
       {/* <div className="flex place-content-center items-center border-b-4 border-green-100">
         <Button>Hello</Button> 
         <Link to={'/myaccount'}>    <Button > Account</Button></Link>

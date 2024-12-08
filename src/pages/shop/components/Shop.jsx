@@ -16,6 +16,7 @@ function ShopSec() {
   useEffect(() => {
     const getItemData = async () => {
       try {
+
         let endpoint = 'http://localhost:5000/api/v1/products/';
         const params = { page: curruntPage };
 
@@ -34,6 +35,7 @@ function ShopSec() {
 
         const ItemsData = await axios.get(endpoint, { params });
         console.log(ItemsData.data.count);
+
 
         setItems(ItemsData.data.rows);
         setCount(ItemsData.data.count);

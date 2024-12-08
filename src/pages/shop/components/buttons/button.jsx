@@ -8,6 +8,7 @@ const Buttons = ({name, onClick, loading,color , isActive}) => {
     <div>
       <Button
         // variant="filled"
+
         className={`flex items-center justify-center normal-case ${color} font-normal text-black
         }  transition duration-300 ease font-roboto
           md:text-base md:w-28 `}

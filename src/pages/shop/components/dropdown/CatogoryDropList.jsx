@@ -71,6 +71,7 @@ export function CatogoryDropList() {
           sm:text-sm sm:px-[40px]'
           onClick={() => setOpenMenu(!openMenu)}
         >
+
           Categories
           <ChevronDownIcon
             strokeWidth={2.5}

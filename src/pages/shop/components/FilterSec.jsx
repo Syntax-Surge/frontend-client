@@ -28,7 +28,7 @@ function FilterSec() {
   return (
     <div className='py-4 shadow-lg md:max-w-[250px] px-[20px] '>
       <div
-        className='flex gap-1 justify-center 
+        className='flex gap-1 justify-center  
           sm:gap-6
         md:flex-col md:mt-10 md:gap-6'
       >
@@ -41,6 +41,7 @@ function FilterSec() {
       </div>
       <div
         className='mt-2 flex gap-4 justify-center 
+
         md:gap-6 md:flex-col md:mt-6'
       >
         <div

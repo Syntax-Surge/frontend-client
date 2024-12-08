@@ -25,7 +25,6 @@ export function FullReview({userId, description, date,rate}) {
     };
     getUserById();
   }, []);
-
   // console.log();
   const {firstName,lastName,id,profileImage} = user
 

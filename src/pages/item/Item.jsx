@@ -43,6 +43,7 @@ function Item() {
     getItem();
   }, [id]);
 
+
   const {
     pictureLocation,
     productDescription,
@@ -78,10 +79,12 @@ function Item() {
               </div>
 
               {/* Item details */}
+
               <div
                 className='p-3 pt-4 font-roboto bg-white sm:px-10 md:pt-16 md:w-full 
               lg:pt-28 lg:pl-28'
               >
+
                 {/* price for large screen  */}
                 <Typography className='hidden md:block font-black text-black text-xl font-roboto mb-6'>
                   LKR<span className='text-2xl'> {unitPrice}</span>
@@ -99,6 +102,11 @@ function Item() {
                 >
                   {productDescription}
                 </Typography>
+                <div className='mt-3'>
+                  <Rate showText={true} rate={rate} />
+                </div>
+                <div className='hidden md:block md:mt-14'><Buttons name='Buy now' color='bg-[rgba(74,156,128,0.5)]'/></div>
+
                 {/* product weight  */}
                 <Typography
                   className='text-black text-xs pt-2
@@ -118,7 +126,7 @@ function Item() {
             {/* Reviews */}
             <div className=''>
               <Reviews
-                // onCardClick={handleShowReviewDetail}
+                onCardClick={handleShowReviewDetail}
                 productId={id}
                 handleRate={handleRate}
               />

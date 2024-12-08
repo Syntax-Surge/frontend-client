@@ -27,6 +27,7 @@ function Reviews({ onCardClick, productId, handleRate }) {
       }
     };
     TopTwoReviews();
+
   }, []);
 
   const { avgRating, topTwoReviews } = TopReviews;
@@ -37,6 +38,7 @@ function Reviews({ onCardClick, productId, handleRate }) {
     return <div>Loading reviews...</div>;
   }
 
+ 
   // console.log(topTwoReviews[0]);
 
   const updatedReviews = topTwoReviews.map((review) => {
