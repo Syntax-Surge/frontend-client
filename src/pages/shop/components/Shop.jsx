@@ -3,16 +3,23 @@ import { useState } from 'react';
 import axios from 'axios';
 import { PlantItemCard } from './card/ShopCard';
 import { DefaultPagination } from './other/Pagination';
+import { useFilterContext } from '../../../contexts/filterContext';
 
 function ShopSec() {
   const [items, setItems] = useState([]);
+  const { selectedCategories } = useFilterContext();
+
+  console.log(selectedCategories);
+  
+
+  // get all item data
   useEffect(() => {
     const getItemData = async () => {
       try {
         const ItemsData = await axios.get(
           'http://localhost:5000/api/v1/products/'
         );
-       
+
         setItems(ItemsData.data.rows);
       } catch (error) {
         console.error('error fetching data', error);
@@ -20,7 +27,6 @@ function ShopSec() {
     };
     getItemData();
   }, []);
-  
 
   return (
     <div className='w-full'>
