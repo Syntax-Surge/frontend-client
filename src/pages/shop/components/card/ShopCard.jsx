@@ -4,46 +4,73 @@ import {
   CardBody,
   CardFooter,
   Typography,
-  Avatar,
-  Tooltip,
 } from '@material-tailwind/react';
-import Buttons from '../buttons/button';
+
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
-export function PlantItemCard({ id, name, description, imageUrl, price }) {
-  // console.log(id);
-
+export function PlantItemCard({
+  id,
+  name,
+  description,
+  imageUrl,
+  price,
+  weight,
+}) {
   const navigate = useNavigate();
 
   const handleCardClick = () => {
     navigate(`/item/${id}`);
   };
 
+  // console.log(price, weight);
+
   return (
-    <Card className='overflow-hidden' onClick={handleCardClick}>
+    <Card
+      className='overflow-hidden sm:max-w-[300px]
+      md:max-w-[300px]'
+      onClick={handleCardClick}
+    >
       <CardHeader
         floated={false}
         shadow={false}
         color='transparent'
-        className='m-0'
+        className='m-0 flex justify-center'
       >
         <img src={imageUrl} alt={`${name}, image`} />
       </CardHeader>
-      <CardBody className='p-1'>
-        <Typography className='font-medium text-black text-sm font-roboto'>
+      <CardBody
+        className='p-1
+      sm:px-4'
+      >
+        <Typography
+          className='font-medium text-black text-sm font-roboto
+        sm:text-base'
+        >
           {name}
         </Typography>
         <Typography
           variant='lead'
           color='gray'
-          className='mt-2 font-normal text-xs font-roboto'
+          className='mt-2 font-normal text-xs font-roboto
+          sm:text-sm'
         >
           {description}
         </Typography>
       </CardBody>
       <CardFooter className='flex items-center justify-center p-1 gap-4'>
-        <Typography className='font-bold text-black text-sm font-roboto'>
-          LKR<span className='text-base'>{price}</span>
+        <Typography
+          className='font-bold text-black text-sm font-roboto
+        sm:text-base'
+        >
+          LKR
+          <span
+            className='text-base
+          sm:text-lg'
+          >
+            {price}
+          </span>
         </Typography>
         {/* <Buttons /> */}
         <svg

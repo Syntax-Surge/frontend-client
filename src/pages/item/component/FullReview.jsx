@@ -1,36 +1,62 @@
 import { Typography, Avatar, Rating } from '@material-tailwind/react';
 import Rate from './Rate';
+import { useEffect, useState } from 'react';
+import axios from 'axios';
 
-export function FullReview() {
+export function FullReview({userId, description, date,rate}) {
+  const [user, setUser] = useState({});
+  // console.log('userid = ', userId, description, date);
+  // userId=2;
+
+  useEffect(() => {
+    const getUserById = async () => {
+      try {
+        const user = await axios.get(
+          'http://localhost:4000/api/v1/users/getUserByID',
+          {
+            params: { id: userId },
+          }
+        );
+        setUser(user.data);
+        console.log(user.data);
+      } catch (error) {
+        console.error(error.message);
+      }
+    };
+    getUserById();
+  }, []);
+
+  // console.log();
+  const {firstName,lastName,id,profileImage} = user
+
   return (
     <div className='px-6 mt-5 mb-8'>
       <div className='flex'>
         <Avatar
-          src='https://images.unsplash.com/flagged/photo-1570612861542-284f4c12e75f?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2940&q=80'
-          alt='image'
+          src={`${profileImage}`}
+          alt='Profile image'
           size='md'
-          className=''
+          className='lg:w-12'
         />
 
         <div className='ml-4 w-[250px]'>
           {/* name and date  */}
           <div className='flex justify-between'>
-            <Typography className='font-bold text-sm font-roboto'>
-              Tania Andrew
+            <Typography className='font-bold text-sm font-roboto lg:text-lg'>
+              {firstName} {lastName}
             </Typography>
-            <Typography className='text-xs font-roboto'>Date</Typography>
+            <Typography className='text-xs font-roboto lg:text-sm'>{date}</Typography>
           </div>
 
-          <Typography color='gray' className='font-normal text-xs font-roboto'>
+          {/* <Typography color='gray' className='font-normal text-xs font-roboto'>
             Lead Frontend Developer
-          </Typography>
-          <Rate />
+          </Typography> */}
+          <Rate rate={rate} />
         </div>
       </div>
 
-      <Typography color='blue-gray' className='font-normal text-xs mt-2'>
-        &quot;This is an excellent product, the documentation is excellent and
-        helped me get things done more efficiently.&quot;
+      <Typography color='blue-gray' className='font-normal text-xs mt-2 lg:text-base'>
+        {description}
       </Typography>
     </div>
   );
