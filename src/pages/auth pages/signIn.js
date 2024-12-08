@@ -11,7 +11,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import "react-toastify/dist/ReactToastify.css";
 import axios from 'axios';
 import { Link, useNavigate } from "react-router-dom";
-import { CookiesProvider, useCookies } from 'react-cookie';
+// import { CookiesProvider, useCookies } from 'react-cookie';
 // import cookie from 'react-cookie'
 
 const SignIn = () => {
