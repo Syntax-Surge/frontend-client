@@ -17,29 +17,11 @@ const CartPage = () => {
   const [cartItems, setCartItems] = useState([]);
   const [selectedItems, setSelectedItems] = useState([]);
   const { puchaseItems, setPurchaseItems } = useCustomContext();
-  // const [selectedItems, setSelectedItems] = useState([
-  //   {
-  //     productId: 2,
-  //     productName: "kaktus",
-  //     quantity: 3,
-  //     pictureLocation: "",
-  //     subTotal: 5200,
-  //     price: 200,
-  //   },
-  //   {
-  //     productId: 2,
-  //     productName: "kaktus",
-  //     quantity: 3,
-  //     pictureLocation: "",
-  //     subTotal: 5200,
-  //     price: 200,
-  //   },
-  // ]);
-  const userId = 4; //
-  const url = "http://localhost:8080/api";
+  const userId = 1; //
+  const url = "http://localhost:3005/api";
 
   const handleCheckout = () => {
-    setPurchaseItems(selectedCartItems);  
+    setPurchaseItems(selectedCartItems);
     console.log("Selected Items for Checkout:", selectedCartItems);
   };
 
