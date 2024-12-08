@@ -10,7 +10,7 @@ function ShopSec() {
     useContext(FilterContext);
   const [items, setItems] = useState([]);
   const [curruntPage, setCurruntPage] = useState(1);
-  const [count, setCount] = useState('');
+  const [count, setCount] = useState(''); 
 
   // get all item data
   useEffect(() => {
