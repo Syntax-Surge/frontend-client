@@ -21,6 +21,10 @@ function App() {
   return (
     <Provider>
       <BrowserRouter>
+      <Routes>
+        <Route path="/auth/signup" element={<SignUp />} />
+        <Route path="/auth/signIn" element={<SignIn />} />
+        </Routes>
         <Navbar />
         <Routes>
           <Route>
@@ -34,24 +38,16 @@ function App() {
           </Route>
 
           <Route>
-            <Route path='/auth/signup' element={<SignUp />} />
-            <Route path='/auth/signIn' element={<SignIn />} />
-          </Route>
-
-          <Route>
-            <Route path='/auth/signup' element={<SignUp />} />
-            <Route path='/auth/signIn' element={<SignIn />} />
-            <Route path='/auth/user/reset/:id' element={<ChangePassword />} />
-            <Route
-              path='/auth/user/forgot-password'
-              element={<ForgotPassword />}
-            />
-
+            {/* <Route path="/auth/signup" element={<SignUp/>} />
+            <Route path="/auth/signIn" element={<SignIn/>} /> */}
+            <Route path="/auth/user/reset/:id" element={<ChangePassword/>} />
+            <Route path="/auth/user/forgot-password" element={<ForgotPassword/>} />
             <Route path='/browse' element={<BrowseByCategory />} />
           </Route>
         </Routes>
         <Footer />
       </BrowserRouter>
+
     </Provider>
   );
 }
