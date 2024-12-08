@@ -16,6 +16,7 @@ function Item() {
   const [showReviewDetail, setShowReviewDetail] = useState(false);
   const [itemData, setItemData] = useState({});
   const [rate, setRate] = useState('');
+  const [orderCount, setOrderCount] = useState('');
 
   const handleRate = (rate) => {
     setRate(rate);
@@ -28,21 +29,29 @@ function Item() {
     setShowReviewDetail(false);
   };
 
+  // Scroll to the top when the page loads or when the id changes
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'instant' });
+  }, [id]);
+
   useEffect(() => {
     const getItem = async () => {
       try {
         const item = await axios.get(
           `http://localhost:5000/api/v1/products/${id}`
         );
+        // const orders = await axios.get(
+        //   `http://localhost:5000/api/v1/products/${id}`
+        // );
 
         setItemData(item.data);
+        // setOrderCount(orders.count);
       } catch (error) {
         console.error('error fetching data', error);
       }
     };
     getItem();
   }, [id]);
-
 
   const {
     pictureLocation,
@@ -84,7 +93,6 @@ function Item() {
                 className='p-3 pt-4 font-roboto bg-white sm:px-10 md:pt-16 md:w-full 
               lg:pt-28 lg:pl-28'
               >
-
                 {/* price for large screen  */}
                 <Typography className='hidden md:block font-black text-black text-xl font-roboto mb-6'>
                   LKR<span className='text-2xl'> {unitPrice}</span>
@@ -102,21 +110,23 @@ function Item() {
                 >
                   {productDescription}
                 </Typography>
+
+                {/* product rate  */}
                 <div className='mt-3'>
-                  <Rate showText={true} rate={rate} />
+                  <Rate
+                    showText={true}
+                    rate={rate}
+                    // orderCount={orderCount.count}
+                  />
                 </div>
-                <div className='hidden md:block md:mt-14'><Buttons name='Buy now' color='bg-[rgba(74,156,128,0.5)]'/></div>
 
                 {/* product weight  */}
                 <Typography
                   className='text-black text-xs pt-2
               sm:text-base'
                 >
-                  Weight : {unitWeight} kg 
+                  Weight : {unitWeight} kg
                 </Typography>
-                <div className='mt-3'>
-                  <Rate showText={true} rate={rate} />
-                </div>
                 <div className='hidden md:block md:mt-14'>
                   <Buttons name='Buy now' color='bg-[rgba(74,156,128,0.5)]' />
                 </div>

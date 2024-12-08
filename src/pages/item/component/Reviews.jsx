@@ -39,7 +39,7 @@ function Reviews({ onCardClick, productId, handleRate }) {
   }
 
  
-  // console.log(topTwoReviews[0]);
+
 
   const updatedReviews = topTwoReviews.map((review) => {
     const dateOnly = new Date(review.createdAt).toISOString().split('T')[0];
@@ -50,15 +50,12 @@ function Reviews({ onCardClick, productId, handleRate }) {
     };
   });
 
-  // console.log(updatedReviews);
 
-
-  // console.log(topTwoReviews);
 
   return (
     <div
       className='bg-white my-5 pb-3 shadow-sm sm:px-4 '
-      // onClick={handleCardTop}
+
     >
       {/* top  */}
       <div className='flex justify-between px-5 pt-5 md:px-32 lg:px-40 xl:px-52 2xl:px-72'>
