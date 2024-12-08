@@ -37,8 +37,8 @@ const Profile = () => {
 
 
     return (
-        <div className="font-sans">
-            <div><Navbar /></div>
+        <div className="font-sans mb-10">
+            {/* <div><Navbar /></div> */}
             <div className="flex  font-bold text-4xl  h-20 text-center justify-center items-end font-sans">My Account</div>
             <div className=" flex w-full">
                 <div className="text-right w-5/12 pr-5  mt-20">
