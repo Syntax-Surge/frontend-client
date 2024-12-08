@@ -1,32 +1,51 @@
-import React, { useEffect } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { useState } from 'react';
 import axios from 'axios';
 import { PlantItemCard } from './card/ShopCard';
 import { DefaultPagination } from './other/Pagination';
-import { useFilterContext } from '../../../contexts/filterContext';
+import { FilterContext } from '../../../contexts/filterContext';
 
 function ShopSec() {
+  const { filteredCategory, searched, minValue, maxValue } =
+    useContext(FilterContext);
   const [items, setItems] = useState([]);
-  const { selectedCategories } = useFilterContext();
-
-  console.log(selectedCategories);
-  
+  const [curruntPage, setCurruntPage] = useState(1);
+  const [count, setCount] = useState('');
 
   // get all item data
   useEffect(() => {
     const getItemData = async () => {
       try {
-        const ItemsData = await axios.get(
-          'http://localhost:5000/api/v1/products/'
-        );
+        let endpoint = 'http://localhost:5000/api/v1/products/';
+        const params = { page: curruntPage };
+
+        if (filteredCategory.length > 0 || minValue || maxValue) {
+          endpoint = 'http://localhost:5000/api/v1/filter';
+          if (filteredCategory.length > 0)
+            params.filteredCategory = filteredCategory;
+          if (minValue) params.minValue = minValue;
+          if (maxValue) params.maxValue = maxValue;
+        }
+
+        if (searched) {
+          endpoint = 'http://localhost:5000/api/v1/search';
+          params.keyword = searched;
+        }
+
+        const ItemsData = await axios.get(endpoint, { params });
+        console.log(ItemsData.data.count);
 
         setItems(ItemsData.data.rows);
+        setCount(ItemsData.data.count);
       } catch (error) {
-        console.error('error fetching data', error);
+        console.error('Error fetching data:', error);
       }
     };
+
     getItemData();
-  }, []);
+  }, [filteredCategory, minValue, maxValue, searched, curruntPage]);
+
+  // console.log(items);
 
   return (
     <div className='w-full'>
@@ -49,7 +68,7 @@ function ShopSec() {
         ))}
       </div>
 
-      {/* <DefaultPagination /> */}
+      <DefaultPagination count={count} setCurruntPage={setCurruntPage} />
     </div>
   );
 }

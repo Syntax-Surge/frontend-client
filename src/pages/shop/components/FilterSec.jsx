@@ -1,51 +1,29 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { Discount } from './Chips/Discount';
 import { CatogoryDropList } from './dropdown/CatogoryDropList';
 import Search from './Input.jsx/Search';
 import { InputDefault } from './Input.jsx/Input';
 import Buttons from './buttons/button';
-import axios from 'axios';
+
+import { FilterContext } from '../../../contexts/filterContext';
 
 function FilterSec() {
-  const [selectedCategories, setSelectedCategories] = useState([]);
-  const [minValue, setMinValue] = useState('');
-  const [maxValue, setMaxValue] = useState('');
-
-  const handleSelectionChange = (categories) => {
-    console.log('Selected Categories:', categories);
-    setSelectedCategories(categories);
-  };
+  const { setMinValue, setMaxValue } = useContext(FilterContext);
+  const [tempMinValue, setTempMinValue] = useState('');
+  const [tempMaxValue, setTempMaxValue] = useState('');
 
   const handleMinChange = (value) => {
-    console.log('Min Value:', value);
-    setMinValue(value);
+    setTempMinValue(value);
   };
 
   const handleMaxChange = (value) => {
-    console.log('Max Value:', value);
-    setMaxValue(value);
+    setTempMaxValue(value);
   };
 
   const onclick = async () => {
-    try {
-      const filterData = {
-        categories: selectedCategories,
-        minValue: minValue,
-        maxValue: maxValue,
-      };
-
-      const response = await axios.post(
-        'http://localhost:5000/api/v1/filters',
-        filterData
-      );
-      console.log('Backend response:', response.data);
-    } catch (error) {
-      console.error('Error sending filter data:', error);
-    }
+    setMinValue(tempMinValue);
+    setMaxValue(tempMaxValue);
   };
-
-  const isFilterActive =
-    selectedCategories.length > 0 || minValue !== '' || maxValue !== '';
 
   return (
     <div className='py-4 shadow-lg md:max-w-[250px] px-[20px] '>
@@ -57,7 +35,7 @@ function FilterSec() {
         {/* discount chip */}
         <Discount />
         {/* dropdown  */}
-        <CatogoryDropList onSelectionChange={handleSelectionChange} />
+        <CatogoryDropList />
         {/* search bar */}
         <Search />
       </div>
@@ -77,7 +55,6 @@ function FilterSec() {
         <Buttons
           name='Ok'
           color='bg-[rgba(74,156,128,0.5)]'
-          isActive={isFilterActive}
           onClick={onclick}
         />
       </div>
