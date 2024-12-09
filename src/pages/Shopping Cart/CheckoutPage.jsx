@@ -16,24 +16,7 @@ const stripePromise = loadStripe(
 const CheckoutPage = () => {
   const { puchaseItems } = useCustomContext();
 
-  const [selectedItems, setSelectedItems] = useState([
-    {
-      productId: 2,
-      productName: "kaktus",
-      quantity: 3,
-      pictureLocation: "",
-      subTotal: 5200,
-      price: 200,
-    },
-    {
-      productId: 2,
-      productName: "kaktus",
-      quantity: 3,
-      pictureLocation: "",
-      subTotal: 5200,
-      price: 200,
-    },
-  ]);
+  const [selectedItems, setSelectedItems] = useState(puchaseItems);
 
   useEffect(() => {
     console.log("Selected items in checkout in chhhhh", puchaseItems);
@@ -55,7 +38,7 @@ const CheckoutPage = () => {
   });
 
   const [total, setTotal] = useState({
-    itemTotal: selectedItems.reduce((acc, s) => acc + s.subTotal, 0),
+    itemTotal: puchaseItems && puchaseItems.reduce((acc, s) => acc + (s.product.unitPrice * s.quantity), 0),
     shipping: 400.0,
   });
 
@@ -100,6 +83,9 @@ const CheckoutPage = () => {
     if (!puchaseItems) {
       newErrors.puchaseItems = "No Any Items";
     }
+    if (puchaseItems.length<1) {
+      newErrors.puchaseItems = "No Any Items";
+    }
     return newErrors;
   };
 
@@ -128,7 +114,7 @@ const CheckoutPage = () => {
             phone: phone,
             note: note,
           },
-          total: (shipping + itemTotal).toFixed(2),
+          total: (shipping + itemTotal).toFixed(2) ,
           items: puchaseItems,
         })
         .then((response) => {

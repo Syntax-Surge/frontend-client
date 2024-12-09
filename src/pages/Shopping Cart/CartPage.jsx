@@ -13,6 +13,7 @@ import CheckoutButton from "../../components/Buttons/CheckoutButton";
 import axios from "axios";
 import { useCustomContext } from "../../contexts/Context.js";
 import { useNavigate } from "react-router-dom";
+import { toast, ToastContainer } from "react-toastify";
 
 const CartPage = () => {
   const navigate = useNavigate();
@@ -23,13 +24,36 @@ const CartPage = () => {
   const userId = 1; //
   const url = "http://localhost:3002/api/v1/orders";
 
+  // const handleCheckout = () => {
+  //   setPurchaseItems(selectedCartItems);
+  //   console.log("Selected Items", selectedCartItems);
+  //   setTimeout(() => {
+  //     navigate('/checkoutPage');
+  //   }, 0);
+  // };
   const handleCheckout = () => {
-    setPurchaseItems(selectedCartItems);  
-    console.log("Selected Items", selectedCartItems);
-    setTimeout(() => {
-      navigate('/checkoutPage');
-    }, 0);
+    if (selectedCartItems.length > 0) {
+      // Check if there are any selected items
+      setPurchaseItems(selectedCartItems);
+      console.log("Selected Items", selectedCartItems);
+      setTimeout(() => {
+        navigate("/checkoutPage");
+      }, 0);
+    } else {
+      console.log("No items selected. Cannot proceed to checkout.");
+      toast.error("No Selected Items!", {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    }
   };
+
   useEffect(() => {
     console.log("Updated Purchase Items:", puchaseItems);
   }, [puchaseItems]);
@@ -320,6 +344,18 @@ const CartPage = () => {
               </div>
             </div>
           </Card>
+          <ToastContainer
+            position="top-center"
+            autoClose={5000}
+            hideProgressBar={false}
+            newestOnTop={false}
+            closeOnClick
+            rtl={false}
+            pauseOnFocusLoss
+            draggable
+            pauseOnHover
+            theme="light"
+          />
         </div>
       </div>
     </div>

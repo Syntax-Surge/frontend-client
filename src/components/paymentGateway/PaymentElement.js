@@ -70,8 +70,8 @@ function PaymentElementComponent() {
               "orderId":2
             })
             console.log(data);
-            setOrderSideBar('order')  
-            toast.error("payment successful", {
+            setOrderSideBar('orders')  
+            toast.success("payment successful", {
               position: "top-center",
               autoClose: 5000,
               hideProgressBar: false,
@@ -81,7 +81,10 @@ function PaymentElementComponent() {
               progress: undefined,
               theme: "light",
               }); 
-              navigate('/myAccount');
+
+              setTimeout(() => {
+                navigate('/myAccount');
+              }, 5000); 
         } else {
           toast.error(`Payment status: ${paymentIntent.status}`, {
             position: "top-center",
@@ -98,7 +101,16 @@ function PaymentElementComponent() {
       }
   
     }catch(e){
-
+      toast.error(`Payment failed`, {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        });
     }
    
     // Confirm the payment
