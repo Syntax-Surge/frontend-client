@@ -4,7 +4,7 @@ import { FullReview } from './FullReview';
 import { useState } from 'react';
 import axios from 'axios';
 
-function Reviews({ onCardClick, productId,handleRate }) {
+function Reviews({ onCardClick, productId, handleRate }) {
   const [TopReviews, setTopReviews] = useState([]);
   const handleCardTop = () => {
     onCardClick();
@@ -27,26 +27,41 @@ function Reviews({ onCardClick, productId,handleRate }) {
       }
     };
     TopTwoReviews();
-  },[]);
 
-  const {avgRating,topTwoReviews} = TopReviews;
-  
+  }, []);
 
-  // console.log(Array.isArray(topTwoReviews));
-  // console.log(topTwoReviews);
+  const { avgRating, topTwoReviews } = TopReviews;
+
   handleRate(avgRating);
-  
+
   if (!Array.isArray(topTwoReviews)) {
     return <div>Loading reviews...</div>;
   }
 
+ 
+  // console.log(topTwoReviews[0]);
+
+  const updatedReviews = topTwoReviews.map((review) => {
+    const dateOnly = new Date(review.createdAt).toISOString().split('T')[0];
+
+    return {
+      ...review, 
+      dateOnly, 
+    };
+  });
+
+  // console.log(updatedReviews);
+
+
+  // console.log(topTwoReviews);
+
   return (
     <div
-      className='bg-white my-5 pb-3 shadow-sm sm:px-6'
-      onClick={handleCardTop}
+      className='bg-white my-5 pb-3 shadow-sm sm:px-4 '
+      // onClick={handleCardTop}
     >
       {/* top  */}
-      <div className='flex justify-between px-5 pt-5'>
+      <div className='flex justify-between px-5 pt-5 md:px-32 lg:px-40 xl:px-52 2xl:px-72'>
         <div className='text-lg font-medium sm:text-xl'>Customer Review</div>
         <div className='mt-1.5 flex'>
           <Rate showText={false} rate={avgRating} />
@@ -67,14 +82,15 @@ function Reviews({ onCardClick, productId,handleRate }) {
         </div>
       </div>
 
-      <div>
-        {topTwoReviews.length > 0 ? (
-          topTwoReviews.map((review) => (
+      <div className='md:flex md:mt-6 justify-around'>
+        {updatedReviews.length > 0 ? (
+          updatedReviews.map((review) => (
             <FullReview
               key={review.id}
-              usrId={review.userId}
+              userId={review.userId}
               description={review.description}
-              date={review.updatedAt}
+              date={review.dateOnly}
+              rate={review.rating}
             />
           ))
         ) : (

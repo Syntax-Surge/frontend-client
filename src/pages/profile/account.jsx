@@ -8,7 +8,7 @@ const Account = () => {
     const [editMode, setEditMode] = useState(false);
     const [user, setUser] = useState("");
     const [error, setError] = useState("");
-    const [userId, setUserId] = useState(20);
+    const [userId, setUserId] = useState(1);
     const [updateFirstName, setUpdateFirstName] = useState("");
     const [updateLastName, setUpdateLastName] = useState("");
     const [updateDisplayName, setUpdateDisplayName] = useState("");
