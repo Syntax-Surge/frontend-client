@@ -20,7 +20,7 @@ const BrowseCarousal = () => {
 
     const getCategories = async () => {
         try {
-            const response = await axios.get('http://localhost:5000/api/v1/categories/subCategories');
+            const response = await axios.get('http://localhost:3002/api/v1/products/categories/subCategories');
             console.log(response);
             const result = response.data;
             setData(result);

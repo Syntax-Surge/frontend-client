@@ -33,7 +33,7 @@ const ProductList = () => {
             const id = selectedCategory?.id;
 
             console.log("Id is called", id);
-            const response = await axios.get('http://localhost:5000/api/v1/categories/browse', {
+            const response = await axios.get('http://localhost:3002/api/v1/products/categories/browse', {
                 params: {
                     id,
                     limit,
