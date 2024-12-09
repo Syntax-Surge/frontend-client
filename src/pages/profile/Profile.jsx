@@ -30,13 +30,14 @@ const Profile = () => {
                     <Orders />
                 </div>
             );
-        } else if (activeTab==="tracking") {
-            return (
-                <div>
-                    Tracking
-                </div>
-            );
         }
+        //  else if (activeTab==="tracking") {
+        //     return (
+        //         <div>
+        //             Tracking
+        //         </div>
+        //     );
+        // }
     }
 
 

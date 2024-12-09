@@ -111,9 +111,9 @@ const Home = () => {
  
   return (
     <div>
-      <Link to={'/auth/signIn'}> <Button >Sign In</Button></Link>
-      <Button onClick={ () => logout()}>Sign out</Button> 
-      <Button onClick={ () => test()}>Test admin route</Button> 
+      {/* <Link to={'/auth/signIn'}> <Button >Sign In</Button></Link> */}
+      {/* <Button onClick={ () => logout()}>Sign out</Button>  */}
+      {/* <Button onClick={ () => test()}>Test admin route</Button>  */}
       {/* <div className="flex place-content-center items-center border-b-4 border-green-100">
         <Button>Hello</Button> 
         <Link to={'/myaccount'}>    <Button > Account</Button></Link>

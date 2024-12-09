@@ -3,13 +3,36 @@ import { IoIosSearch } from "react-icons/io";
 import { CgProfile } from "react-icons/cg";
 import { PiShoppingCartThin } from "react-icons/pi";
 import { PiPottedPlantLight } from "react-icons/pi";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import SearchBar from "../searchbar/seachbar";
 import { Button } from "@material-tailwind/react";
+import { Link } from "react-router-dom";
+import { useCookies } from "react-cookie";
 
 const Navbar = () => {
   const [searchActive, setSearchActive] = useState(false);
-  const [isLoggedIn, setIsLoggedIn] = useState(true);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  const [cookies, setCookie, removeCookie] = useCookies(['user']);
+
+  if (cookies.user) {
+
+    console.log('coooooooooooookie nav:', cookies.user.userId)
+  } else {
+    console.log("No user data found in cookies. nav");
+  }
+
+  useEffect(() => {
+    // Check if userId exists in cookies and update the state
+    if (cookies?.user?.userId) {
+        setIsLoggedIn(true);
+    } else {
+        setIsLoggedIn(false);
+    }
+}, [cookies]);
+
+  
+  
   return (
     <nav className="bg-white p-4 flex justify-between items-center h-20">
       <div className="flex items-center ml-7">
@@ -37,19 +60,19 @@ const Navbar = () => {
           </a>
         </li>
         <li>
-          <a href="#plant-care" className="hover:text-green-500">
-            Categories
+          <a href="/browse" className="hover:text-green-500">
+          Categories
           </a>
         </li>
         <li>
-          <a href="#about" className="hover:text-green-500">
+          <a href="/reviews" className="hover:text-green-500">
             Reviews
           </a>
         </li>
       </ul>
 
       <div className="flex space-x-6 text-gray-700 items-center mr-7">
-        {searchActive ? (
+        {/* {searchActive ? (
           <SearchBar setSearchActive={setSearchActive} />
         ) : (
           <button
@@ -58,7 +81,7 @@ const Navbar = () => {
           >
             <IoIosSearch />
           </button>
-        )}
+        )} */}
         {/* <a href="#search" className="hover:text-green-500"><IoIosSearch /></a> */}
 
         {isLoggedIn ? (
@@ -70,9 +93,7 @@ const Navbar = () => {
               <PiShoppingCartThin />
             </a>
           </>
-        ) : (
-          <Button>Sign In</Button>
-        )}
+        ) : <Link to={'/auth/signIn'}> <Button >Sign In</Button></Link>}
       </div>
     </nav>
   );

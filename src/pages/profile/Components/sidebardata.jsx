@@ -13,13 +13,13 @@ export const sidebardata = [
         title:  "Orders",
         link: "orders",
     },
-    {
-        title:  "Tracking",
-        link: "tracking",
-    },
-    {
-        title:  "Log Out",
-        link: "",
-    }
+    // {
+    //     title:  "Tracking",
+    //     link: "tracking",
+    // },
+    // {
+    //     title:  "Log Out",
+    //     link: "",
+    // }
 ];
 

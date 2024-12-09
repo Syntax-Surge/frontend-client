@@ -50,7 +50,9 @@ const Orders = () => {
     const userData = async () => {
       //   setLoading(true); // Start loading
       try {
-        const response = await axios.get(`http://localhost:4000/api/v1/users/getOrders?id=${userId}`); // Replace with your API endpoint 
+        const response = await axios.get(`http://localhost:3002/api/v1/users/profile/user/getOrders?id=${userId}`,{ withCredentials: true }); // Replace with your API endpoint 
+        console.log(response);
+        
 
 
         // console.log(response.data.orderItems);
@@ -99,6 +101,7 @@ const Orders = () => {
 
   const CloseReview = () => {
     setOpenReview(!openReview);
+    setEditMode(false);
   }
 
   const handleOpenReview = async (productName, unitPrice, productLocation, reviewProductId) => {
@@ -113,7 +116,7 @@ const Orders = () => {
     try {
       console.log(userId);
       
-      const ReviewByUser = await axios.get(`http://localhost:5000/api/v1/reviews/getReviewsForUser?userId=${userId}&productId=${reviewProductId}`);
+      const ReviewByUser = await axios.get(`http://localhost:3002/api/v1/products/reviews/getReviewsForUser?userId=${userId}&productId=${reviewProductId}`,{ withCredentials: true });
       setReviewsByUser(ReviewByUser.data);
       console.log(ReviewByUser.data);
     } catch (error) {
@@ -136,10 +139,30 @@ const Orders = () => {
         rating: rating,
         description: userReview,
       }
-      const res = await axios.post(`http://localhost:5000/api/v1/reviews`, data);
+      const res = await axios.post(`http://localhost:3002/api/v1/products/reviews`, data);
       console.log(res.data);
     } catch (error) {
       console.log(error.message);
+      return
+    }
+
+    setOpenReview(!openReview);
+  };
+
+  const handleReviewUpdate = async () => {
+
+    try {
+      let data = {
+        productId: reviewProductId,
+        userId: userId,
+        rating: rating,
+        description: userReview,
+      }
+      const res = await axios.put(`http://localhost:3002/api/v1/products/reviews`, data);
+      console.log(res.data);
+    } catch (error) {
+      console.log(error.message);
+      return
     }
 
     setOpenReview(!openReview);
@@ -188,7 +211,9 @@ const Orders = () => {
               {/* {Object.keys(orders).map((orderId, index) => { */}
               {orders?.map((orderId, index) => {
                 // Calculate the number of attributes in the order object
-                const numberOfItems = Object.keys(orderId?.items).length;
+
+                // const numberOfItems = Object.keys(orderId?.items).length;
+                // const numberOfItems = orderId?.items ? Object.keys(orderId.items).length : 0;
 
                 // Get the grouped data for this order
                 // const items = groupedData[orderId];
@@ -215,7 +240,7 @@ const Orders = () => {
                         variant="small"
                         className="font-normal text-gray-600"
                       >
-                        {numberOfItems}
+                        {/* {numberOfItems}  */}
                       </Typography>
                     </td>
                     <td className="py-4 border-b border-gray-300">
@@ -310,28 +335,46 @@ const Orders = () => {
       <Dialog open={openReview} handler={handleOpenReview}>
         <DialogHeader>Product Review</DialogHeader>
         <DialogBody>
-          <div className='flex'>
+          <div className='  flex justify-between w-full'>
             <img
               src={reviewProductLocation}
               alt="Profile"
-              className="rounded w-40 h-40 mb-2"
+              className="rounded w-40 h-40 mb-2 ml-5"
             />
-            <div>
-              <p>Product Name: {reviewProductName}</p>
-              <p>Product Price: {reviewUnitPrice}</p>
+            <div className='   mr-40 mt-2'>
+              <p className=''>Product Name: {reviewProductName}</p>
+              <p className='mt-2'>Product Price: {reviewUnitPrice}</p>
               <input
                 type="number"
                 max="5"
                 min='0'
-                className="w-full bg-transparent placeholder:text-gray-400 text-gray-700 text-sm border border-gray-300 rounded-md px-3 py-2 transition duration-300 ease focus:outline focus:border-gray-600 hover:border-gray-600 shadow-sm focus:shadow"
+                className="w-full bg-transparent placeholder:text-gray-400 text-gray-700 text-sm border border-gray-300 rounded-md px-3 py-2 transition duration-300 ease focus:outline focus:border-gray-600 hover:border-gray-600 shadow-sm focus:shadow mt-2"
                 onChange={(e) => setRating(e.target.value)}
                 disabled={ReviewsByUser && !editMode}   
                 placeholder={ReviewsByUser?.rating}   
               />
             </div>
+            <div className='  flex justify-end mr-7'>
+
+
+            {ReviewsByUser && !editMode ? 
+            <svg className='flex text-right w-full text-base justify-between' onClick={() => setEditMode(true)} xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+            <path stroke-linecap="round" stroke-linejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10" />
+        </svg>
+           : 
+           ""}
+
+
+
+
+              {/* <p>Edit</p> */}
+              {/* <svg className='flex text-right w-full text-base justify-between' onClick={() => setEditMode(true)} xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10" />
+                                    </svg> */}
+            </div>
           </div>
           <div>
-            <div className="w-96">
+            <div className="w-96 mt-5">
               <Textarea placeholder={ReviewsByUser?.description} disabled={ReviewsByUser && !editMode} onChange={(e) => SetUserReview(e.target.value)} />
             </div>
           </div>
@@ -352,7 +395,7 @@ const Orders = () => {
            : 
            ""}
            {editMode ? 
-           <Button variant="gradient" color="green" onClick={handleReviewSubmit}>
+           <Button variant="gradient" color="green" onClick={handleReviewUpdate}>
             <span>Update</span>
           </Button>
            : 

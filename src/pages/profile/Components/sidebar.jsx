@@ -1,12 +1,15 @@
 import React, { useState, useRef, useEffect } from 'react'
 import { sidebardata } from './sidebardata'
 import axios from 'axios';
+import { toast } from "react-toastify";
+import { useCookies } from "react-cookie";
+import { Link, useNavigate } from "react-router-dom";
 
 
 
 function Sidebar({ setActiveTab, activeTab }) {
 
-
+  const navigate = useNavigate();
 
   const [image, setImage] = useState();
   const [imageUrl, setImageUrl] = useState();
@@ -14,7 +17,75 @@ function Sidebar({ setActiveTab, activeTab }) {
   const fileInputRef = useRef(null);
   const [refreshDetails, setRefreshDetails] = useState(true);
   const [imageUrlDB, setImageUrlDB] = useState();
-  const [error, setError] = useState("")
+  const [error, setError] = useState("");
+  const [user, setUser] = useState();
+  const [cookies, setCookie, removeCookie] = useCookies(['user']);
+
+
+  useEffect(() => {
+    const userData = async () => {
+        //   setLoading(true); // Start loading
+        try {
+            const response = await axios.get(`http://localhost:3002/api/v1/users/profile/user/getUserById?id=${userId}`,{ withCredentials: true }); // Replace with your API endpoint
+            setUser(response.data); // Save response data to state
+            console.log(response);
+
+        } catch (err) {
+            setError(err.message); // Handle errors
+        }
+    };
+
+    userData();
+}, [refreshDetails]);
+
+
+const logout = async () => {
+  try {
+    const response = await axios.post("http://localhost:3002/api/v1/users/logout", {}, { withCredentials: true });
+    console.log('Response Headers:', response.headers);
+    console.log('Response :', response);
+    if (response.status === 200) {
+      toast.success('Successfully Signed Out', {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+       });
+       // Logout successful
+       // Clear local authentication state
+       // localStorage.removeItem('userId'); // Or any other relevant state
+       // Redirect to login page
+       // window.location.href = '/login'; 
+       removeCookie('user',{path:'/'});
+       removeCookie('connect.sid',{path:'/'});
+       setTimeout(() => {
+        navigate("/");
+        }, 2000); 
+    } else {
+      // Handle non-200 responses (e.g., 400, 500)
+      throw new Error(`Logout failed with status: ${response.status}`); 
+    }
+  } catch (error) {
+    console.error('Logout error:', error);
+    toast.error(`Error Occured..Try again!`, {
+      position: "top-center",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+    });
+  }
+};
+
+
+
 
 
 
@@ -43,14 +114,14 @@ function Sidebar({ setActiveTab, activeTab }) {
       }
   
       try {
-        const uploadResponse = await axios.post(`http://localhost:4000/api/v1/users/uploadProfileImage`, formData, {
+        const uploadResponse = await axios.post(`http://localhost:3002/api/v1/users/profile/user/uploadProfileImage`, formData, {
           headers: { 'Content-Type': 'multipart/form-data' },
         });
         const imageUrl = uploadResponse.data.url;
         console.log(imageUrl);
         
   
-        await axios.post(`http://localhost:4000/api/v1/users/updateUserProfile?id=${userId}`, { imageUrl });
+        await axios.post(`http://localhost:3002/api/v1/users/profile/user/updateUserProfile?id=${userId}`, { imageUrl });
         setImageUrl(imageUrl); // Update the state 
         setRefreshDetails((prev) => !prev);
       } catch (error) {
@@ -66,7 +137,7 @@ function Sidebar({ setActiveTab, activeTab }) {
     const userData = async () => {
       //   setLoading(true); // Start loading
       try {
-        const response = await axios.get(`http://localhost:4000/api/v1/users/getUserByID?id=${userId}`); // Replace with your API endpoint
+        const response = await axios.get(`http://localhost:3002/api/v1/users/profile/user/getUserByID?id=${userId}`,{ withCredentials: true }); // Replace with your API endpoint
         setImageUrlDB(response.data.profileImage);
 
 
@@ -114,7 +185,7 @@ function Sidebar({ setActiveTab, activeTab }) {
               onChange={handleFileInput}
             />
 
-            <h2 className="mt-2 font-semibold text-3xl text-gray-300">Sofia Havertz</h2>
+            <h2 className="mt-2 font-semibold text-3xl text-gray-300">{user?.firstName}</h2>
           </div>
         </div>
         {/* <hr className=' ml-3 mr-3 border-black'></hr> */}
@@ -134,6 +205,9 @@ function Sidebar({ setActiveTab, activeTab }) {
 
               );
             })}
+            <li className={`mt-2 mb-2 pt-2 pl-5 pb-2 hover:text-[#1B786F] hover:cursor-pointer hover:bg-gray-300 rounded-xl` } onClick={ () => logout()}>
+              Log Out
+            </li>
           </ul>
         </div>
 
