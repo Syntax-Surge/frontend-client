@@ -13,6 +13,7 @@ import CheckoutButton from "../../components/Buttons/CheckoutButton";
 import axios from "axios";
 import { useCustomContext } from "../../contexts/Context.js";
 import { useNavigate } from "react-router-dom";
+import { toast, ToastContainer } from "react-toastify";
 
 const CartPage = () => {
   const navigate = useNavigate();
@@ -24,12 +25,28 @@ const CartPage = () => {
   const url = "http://localhost:3002/api/v1/orders";
 
   const handleCheckout = () => {
-    setPurchaseItems(selectedCartItems);  
-    console.log("Selected Items", selectedCartItems);
-    setTimeout(() => {
-      navigate('/checkoutPage');
-    }, 0);
+    if (selectedCartItems.length > 0) {
+      // Check if there are any selected items
+      setPurchaseItems(selectedCartItems);
+      console.log("Selected Items", selectedCartItems);
+      setTimeout(() => {
+        navigate("/checkoutPage");
+      }, 0);
+    } else {
+      console.log("No items selected. Cannot proceed to checkout.");
+      toast.error("No Selected Items!", {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    }
   };
+
   useEffect(() => {
     console.log("Updated Purchase Items:", puchaseItems);
   }, [puchaseItems]);
@@ -37,7 +54,8 @@ const CartPage = () => {
   // Fetch cart items from the backend
   const fetchCartItems = async () => {
     try {
-      const response = await axios.get(url + `/cart/${userId}`,{ withCredentials: true,});
+      const response = await axios.get(url + `/cart/${userId}`,{withCredentials:true});
+
       setCartItems(response.data);
       console.log(response.data);
     } catch (error) {
@@ -55,7 +73,7 @@ const CartPage = () => {
         userId,
         productId: id,
         quantity: amount,
-      });
+      },{withCredentials:true});
       fetchCartItems(); // Refresh cart
     } catch (error) {
       console.error("Error updating item quantity:", error.message);
@@ -72,8 +90,9 @@ const CartPage = () => {
   // Remove an item from the cart
   const handleRemoveFromCart = async (id) => {
     try {
-      await axios.delete(url + `/cart/remove/${id}`, {
+      await axios.delete(`${url}/cart/remove/${id}`, {
         data: { userId, productId: id },
+        withCredentials:true
       });
       fetchCartItems(); // Refresh cart
     } catch (error) {
@@ -105,7 +124,7 @@ const CartPage = () => {
     (acc, item) => acc + item.product.unitPrice * item.quantity,
     0
   );
-  const discount = selectedCartItems.length > 0 ? 10 : 0; // Example discount
+  const discount = selectedCartItems.length > 0 ? 0 : 0; // Example discount
   const total = subTotal - discount;
 
   return (
@@ -320,6 +339,18 @@ const CartPage = () => {
               </div>
             </div>
           </Card>
+          <ToastContainer
+            position="top-center"
+            autoClose={5000}
+            hideProgressBar={false}
+            newestOnTop={false}
+            closeOnClick
+            rtl={false}
+            pauseOnFocusLoss
+            draggable
+            pauseOnHover
+            theme="light"
+          />
         </div>
       </div>
     </div>

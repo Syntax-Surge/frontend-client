@@ -90,12 +90,14 @@ const Footer = () => {
       <div className="mx-auto w-full max-w-7xl">
         <div className="grid grid-cols-1 justify-between md:grid-cols-2">
           <Typography className="mb-6 mt-5">
-            <img
-              src={logo}
-              alt="logo"
-              className="mr-10 w-40 cursor-pointer"
-              style={{ marginLeft: "-10px" }}
-            />
+            <a href="/">
+              <img
+                src={logo}
+                alt="logo"
+                className="mr-10 w-40 cursor-pointer"
+                style={{ marginLeft: "-10px" }}
+              />{" "}
+            </a>
             <div className="ml-0 mt-8 font-light">
               We help you find <br /> your dream plant
             </div>
