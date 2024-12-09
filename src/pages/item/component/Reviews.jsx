@@ -21,6 +21,8 @@ function Reviews({ onCardClick, productId, handleRate }) {
             },
           }
         );
+
+
         setTopReviews(topTwoReviews.data);
         console.log(topTwoReviews);
       } catch (error) {
@@ -55,7 +57,7 @@ function Reviews({ onCardClick, productId, handleRate }) {
         <div className='text-lg font-medium sm:text-xl'>Customer Review</div>
         <div className='mt-1.5 flex'>
           <Rate showText={false} rate={avgRating} />
-          <svg
+          {/* <svg
             xmlns='http://www.w3.org/2000/svg'
             fill='none'
             viewBox='0 0 24 24'
@@ -68,7 +70,7 @@ function Reviews({ onCardClick, productId, handleRate }) {
               strokeLinejoin='round'
               d='m8.25 4.5 7.5 7.5-7.5 7.5'
             />
-          </svg>
+          </svg> */}
         </div>
       </div>
 

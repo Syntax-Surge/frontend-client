@@ -12,7 +12,7 @@ export function FullReview({userId, description, date,rate}) {
     const getUserById = async () => {
       try {
         const user = await axios.get(
-          'http://localhost:4000/api/v1/users/getUserByID',
+          'http://localhost:3002/api/v1/users/profile/user/getUserById',
           {
             params: { id: userId },
           }

@@ -213,7 +213,7 @@ const onClick = async () => {
             <FullReview />
             <FullReview />
           </div>
-          <Shop showHeroAndFilter={false} />
+          {/* <Shop showHeroAndFilter={false} /> */}
         </div>
       )}
     </div>
