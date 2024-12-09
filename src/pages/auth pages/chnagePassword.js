@@ -30,7 +30,7 @@ const ChangePassword = () => {
     "userId" : id
   }
   console.log(' id   :',  id)
-    axios.post("http://localhost:4000/password/reset-password" ,userData).then( (res) => {
+    axios.post("http://localhost:3002/api/v1/users/password/reset-password" ,userData).then( (res) => {
       console.log('res.status', res.status)
       if(res.status === 200){
         toast.success('Password changed successfully!', {

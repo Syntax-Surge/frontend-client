@@ -55,6 +55,7 @@ const CartPage = () => {
   const fetchCartItems = async () => {
     try {
       const response = await axios.get(url + `/cart/${userId}`,{withCredentials:true});
+
       setCartItems(response.data);
       console.log(response.data);
     } catch (error) {

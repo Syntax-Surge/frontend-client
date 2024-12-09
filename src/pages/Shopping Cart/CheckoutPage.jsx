@@ -117,6 +117,7 @@ const CheckoutPage = () => {
           total: (shipping + itemTotal).toFixed(2) ,
           items: puchaseItems,
         },{withCredentials:true})
+
         .then((response) => {
           const data = response.data; // Access the response data
           if (data.clientSecret) {
