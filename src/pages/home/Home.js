@@ -1,6 +1,6 @@
 import { Button } from "@material-tailwind/react";
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import CheckoutPage from "../Shopping Cart/CheckoutPage";
 import Hero from "./Hero";
 import BrowseCarousal from "../category/BrowseCarousal";
@@ -9,20 +9,50 @@ import LatestProducts from "./LatestProducts";
 import { motion } from 'framer-motion';
 import { toast } from "react-toastify";
 import axios from "axios";
+import { useCookies } from "react-cookie";
 
 const Home = () => {
- 
+  const navigate = useNavigate();
+  // const [cookies] = useCookies(["user"]);
+  const [cookies, setCookie, removeCookie] = useCookies(['user']);
+
+
+  // useEffect(() => {
+  //   if (cookies.user) {
+  //     // const userData = JSON.parse(cookies.user);
+  //     // console.log("User ID:", userData.userId);
+  //     // console.log("Username:", userData.username);
+  //   } else {
+  //     console.log("No user data found in cookies. home page");
+  //   }
+  // }, [cookies]);
+
   const logout = async () => {
     try {
-      const response = await axios.post("http://localhost:4000/logout", {}, { withCredentials: true });
+      const response = await axios.post("http://localhost:3002/api/v1/users/logout", {}, { withCredentials: true });
       console.log('Response Headers:', response.headers);
+      console.log('Response :', response);
       if (response.status === 200) {
-        console.log('Response :', response);
-        // Logout successful
-        // Clear local authentication state
-        // localStorage.removeItem('userId'); // Or any other relevant state
-        // Redirect to login page
-        // window.location.href = '/login'; 
+        toast.success('Successfully Signed Out', {
+          position: "top-center",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+         });
+         // Logout successful
+         // Clear local authentication state
+         // localStorage.removeItem('userId'); // Or any other relevant state
+         // Redirect to login page
+         // window.location.href = '/login'; 
+         removeCookie('user',{path:'/'});
+         removeCookie('connect.sid',{path:'/'});
+         setTimeout(() => {
+          navigate("/auth/signIn");
+          }, 2000); 
       } else {
         // Handle non-200 responses (e.g., 400, 500)
         throw new Error(`Logout failed with status: ${response.status}`); 
@@ -41,7 +71,14 @@ const Home = () => {
       });
     }
   };
- 
+
+  if (cookies.user) {
+
+    console.log('coooooooooooookie home:', cookies.user.userId)
+  } else {
+    console.log("No user data found in cookies. signin page ");
+  }
+  
   const test = async () => {
     try {
       const response = await axios.post("http://localhost:4000/admin/inside", {}, { withCredentials: true });
@@ -71,7 +108,7 @@ const Home = () => {
       });
     }
   };
-
+ 
   return (
     <div>
       <Link to={'/auth/signIn'}> <Button >Sign In</Button></Link>
