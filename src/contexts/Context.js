@@ -10,6 +10,7 @@ export const Provider = ({ children }) => {
   const [categories, setCategories] = useState([]);
   const [filteredCategory, setFilteredCategory] = useState(null);
   const [searched, setSearched] = useState('');
+  const [OrderSideBar, setOrderSideBar] = useState('account');
 
   useEffect(() => {
       const currnetPath = window.location.pathname;
@@ -40,6 +41,8 @@ export const Provider = ({ children }) => {
         setFilteredCategory,
         searched,
         setSearched,
+        OrderSideBar,
+        setOrderSideBar
       }}
     >
       {children}

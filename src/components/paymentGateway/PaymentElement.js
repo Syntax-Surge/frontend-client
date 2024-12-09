@@ -2,16 +2,16 @@ import React, { useState, useEffect } from 'react';
 import { PaymentElement, useStripe, useElements, CardElement } from '@stripe/react-stripe-js';
 import axios from 'axios';
 import PurchaseOrderButton from '../Buttons/PurchaseOrderButton';
+import { useCustomContext } from '../../contexts/Context';
+import { toast, ToastContainer } from "react-toastify";
+import { useNavigate } from 'react-router-dom';
 
 function PaymentElementComponent() {
   const stripe = useStripe();
   const elements = useElements();
   const [loading, setLoading] = useState(false);
-
-  const product = {
-    name: 'Sample Product',
-    price: 2000, // Amount in cents
-  };
+  const { setOrderSideBar } = useCustomContext();
+  const navigate = useNavigate();
 
   // useEffect(() => {
   //   // Fetch the Payment Intent client secret from the backend
@@ -70,6 +70,8 @@ function PaymentElementComponent() {
             "orderId":2
           })
           console.log(data);
+          setOrderSideBar('order')
+          navigate('/myAccount');
           
         alert('Payment succeeded!');
       } else {
