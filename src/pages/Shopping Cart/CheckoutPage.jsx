@@ -16,24 +16,7 @@ const stripePromise = loadStripe(
 const CheckoutPage = () => {
   const { puchaseItems } = useCustomContext();
 
-  const [selectedItems, setSelectedItems] = useState([
-    {
-      productId: 2,
-      productName: "kaktus",
-      quantity: 3,
-      pictureLocation: "",
-      subTotal: 5200,
-      price: 200,
-    },
-    {
-      productId: 2,
-      productName: "kaktus",
-      quantity: 3,
-      pictureLocation: "",
-      subTotal: 5200,
-      price: 200,
-    },
-  ]);
+  const [selectedItems, setSelectedItems] = useState(puchaseItems);
 
   useEffect(() => {
     console.log("Selected items in checkout in chhhhh", puchaseItems);
@@ -55,7 +38,7 @@ const CheckoutPage = () => {
   });
 
   const [total, setTotal] = useState({
-    itemTotal: selectedItems.reduce((acc, s) => acc + s.subTotal, 0),
+    itemTotal: puchaseItems && puchaseItems.reduce((acc, s) => acc + (s.product.unitPrice * s.quantity), 0),
     shipping: 400.0,
   });
 
@@ -100,6 +83,9 @@ const CheckoutPage = () => {
     if (!puchaseItems) {
       newErrors.puchaseItems = "No Any Items";
     }
+    if (puchaseItems.length<1) {
+      newErrors.puchaseItems = "No Any Items";
+    }
     return newErrors;
   };
 
@@ -128,9 +114,10 @@ const CheckoutPage = () => {
             phone: phone,
             note: note,
           },
-          total: (shipping + itemTotal).toFixed(2),
+          total: (shipping + itemTotal).toFixed(2) ,
           items: puchaseItems,
-        })
+        },{withCredentials:true})
+
         .then((response) => {
           const data = response.data; // Access the response data
           if (data.clientSecret) {
@@ -171,14 +158,15 @@ const CheckoutPage = () => {
   };
 
   const getShippingAddress = async () => {
-    const data = await axios.get("localhost/user shipping address", {});
-    const { addressLine1, addressLine2, city, postalCode } = data;
+    const res = await axios.get("http://localhost:3002/api/v1/users/profile/user/getAddressById?id=20",{withCredentials:true});
+    const { shippingAddressLine1, shippingAddressLine2, shippingCity, shippingPostalCode } = res.data;
+    console.log(shippingAddressLine1,res.data,"shipping address");
 
     setShippingDetails({
-      addressLine1: addressLine1 || "",
-      addressLine2: addressLine2 || "",
-      city: city || "",
-      postalCode: postalCode || "",
+      addressLine1: shippingAddressLine1 || "",
+      addressLine2: shippingAddressLine2 || "",
+      city: shippingCity || "",
+      postalCode: shippingPostalCode || "",
     });
   };
 
@@ -192,7 +180,7 @@ const CheckoutPage = () => {
   };
 
   useEffect(() => {
-    // getShippingAddress()
+     getShippingAddress()
   }, []);
   // useEffect(() => {
   //   console.log("fetch");

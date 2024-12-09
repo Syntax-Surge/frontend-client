@@ -22,12 +22,10 @@ import Footer from './components/layout/footer';
 import MainLayout from './layout/main_layout';
 import AuthLayout from './layout/outlet';
 
-
 function App() {
   return (
     <Provider>
       <BrowserRouter>
-        {/* <Navbar /> */}
         <Routes>
           <Route element={<MainLayout/>}>
 
@@ -52,12 +50,9 @@ function App() {
             <Route path="/reviews" element={<CustomerReview />} />
             <Route path='/browse' element={<BrowseByCategory/>} />
           </Route>
-          
-        
         </Routes>
         {/* <Footer /> */}
       </BrowserRouter>
-
     </Provider>
   );
 }

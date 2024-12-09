@@ -14,7 +14,7 @@ function Reviews({ onCardClick, productId, handleRate }) {
     const TopTwoReviews = async () => {
       try {
         const topTwoReviews = await axios.get(
-          'http://localhost:5000/api/v1/reviews/two',
+          'http://localhost:3002/api/v1/products/reviews/two',
           {
             headers: {
               id: productId,
@@ -22,15 +22,16 @@ function Reviews({ onCardClick, productId, handleRate }) {
           }
         );
         setTopReviews(topTwoReviews.data);
+        console.log(topTwoReviews);
       } catch (error) {
         console.error(error.message);
       }
     };
     TopTwoReviews();
-
   }, []);
 
   const { avgRating, topTwoReviews } = TopReviews;
+  console.log(TopReviews);
 
   handleRate(avgRating);
 
@@ -38,28 +39,17 @@ function Reviews({ onCardClick, productId, handleRate }) {
     return <div>Loading reviews...</div>;
   }
 
- 
-  // console.log(topTwoReviews[0]);
-
   const updatedReviews = topTwoReviews.map((review) => {
     const dateOnly = new Date(review.createdAt).toISOString().split('T')[0];
 
     return {
-      ...review, 
-      dateOnly, 
+      ...review,
+      dateOnly,
     };
   });
 
-  // console.log(updatedReviews);
-
-
-  // console.log(topTwoReviews);
-
   return (
-    <div
-      className='bg-white my-5 pb-3 shadow-sm sm:px-4 '
-      // onClick={handleCardTop}
-    >
+    <div className='bg-white my-5 pb-3 shadow-sm sm:px-4 '>
       {/* top  */}
       <div className='flex justify-between px-5 pt-5 md:px-32 lg:px-40 xl:px-52 2xl:px-72'>
         <div className='text-lg font-medium sm:text-xl'>Customer Review</div>

@@ -36,11 +36,13 @@ const Navbar = () => {
   return (
     <nav className="bg-white p-4 flex justify-between items-center h-20">
       <div className="flex items-center ml-7">
-        <img
-          src={require("../../images/Planty's Logo.png")}
-          alt=""
-          className="mb-2"
-        />
+        <a href="/">
+          <img
+            src={require("../../images/Planty's Logo.png")}
+            alt=""
+            className="mb-2"
+          />
+        </a>
         {/* <PiPottedPlantLight /> */}
         {/* <img src="/logo.svg" alt="PlantyX Logo" className="w-8 h-8 mr-2" /> */}
         {/* <span className="text-lg font-thin">Planty'x</span> */}

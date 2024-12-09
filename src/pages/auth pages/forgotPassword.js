@@ -45,7 +45,7 @@ const ForgotPassword = () => {
     }
     setIsLoading(true);
     await axios
-      .post("http://localhost:4000/password/forgot-password", userData)
+      .post("http://localhost:3002/api/v1/users/password/forgot-password", userData)
       .then((res) => {
         console.log("res.status", res.status);
         if (res.status === 200) {

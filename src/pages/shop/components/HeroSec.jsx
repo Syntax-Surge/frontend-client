@@ -1,13 +1,13 @@
 import React from 'react';
-import shopHeroPic from '../../../images/shop-hero-sec-pic.png';
+import shopHeroPic from '../../../images/plant-shop-hero-image.jpg';
 
 function HeroSec() {
   return (
     <div className=''>
       {/* image */}
-      <div className='flex justify-center'>
-        <img className='w-10/12' src={shopHeroPic} alt='plant picture' />
-      </div>
+      {/* <div className='flex justify-center'>
+        <img className='w-96' src={shopHeroPic} alt='plant picture' />
+      </div> */}
       {/* gray background */}
       <div className='bg-[#ededed] h-[130px] mt-[-70px]'>
         <p className='flex justify-center pt-[85px] font-poppins font-bold'>
