@@ -6,10 +6,11 @@ import { PiPottedPlantLight } from "react-icons/pi";
 import { useState } from "react";
 import SearchBar from "../searchbar/seachbar";
 import { Button } from "@material-tailwind/react";
+import { Link } from "react-router-dom";
 
 const Navbar = () => {
   const [searchActive, setSearchActive] = useState(false);
-  const [isLoggedIn, setIsLoggedIn] = useState(true);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   return (
     <nav className="bg-white p-4 flex justify-between items-center h-20">
       <div className="flex items-center ml-7">
@@ -30,24 +31,24 @@ const Navbar = () => {
           </a>
         </li>
         <li>
-          <a href="#for-offices" className="hover:text-green-500">
+          <a href="/shop" className="hover:text-green-500">
             Shop
           </a>
         </li>
         <li>
-          <a href="#plant-care" className="hover:text-green-500">
+          <a href="/browse" className="hover:text-green-500">
           Categories
           </a>
         </li>
         <li>
-          <a href="#about" className="hover:text-green-500">
+          <a href="/reviews" className="hover:text-green-500">
             Reviews
           </a>
         </li>
       </ul>
 
       <div className="flex space-x-6 text-gray-700 items-center mr-7">
-        {searchActive ? (
+        {/* {searchActive ? (
           <SearchBar setSearchActive={setSearchActive} />
         ) : (
           <button
@@ -56,7 +57,7 @@ const Navbar = () => {
           >
             <IoIosSearch />
           </button>
-        )}
+        )} */}
         {/* <a href="#search" className="hover:text-green-500"><IoIosSearch /></a> */}
 
         {isLoggedIn ? (
@@ -68,7 +69,7 @@ const Navbar = () => {
               <PiShoppingCartThin />
             </a>
           </>
-        ) : <Button>Sign In</Button>}
+        ) : <Link to={'/auth/signIn'}> <Button >Sign In</Button></Link>}
       </div>
     </nav>
   );

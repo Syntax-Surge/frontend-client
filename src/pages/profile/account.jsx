@@ -16,8 +16,46 @@ const Account = () => {
     const [updateNewPassword, setUpdateNewPassword] = useState("");
     const [updateNewRepeatPassword, setUpdateNewRepeatPassword] = useState("");
     const [refreshDetails, setRefreshDetails] = useState(true);
+    const [errorEmail, setErrorEmail] = useState(false);
+    const [errorPasswordMismatch, setErrorPasswordMismatch] = useState();
 
     const submit = async() => {
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+        if (updateEmail) {
+            console.log("emailpresent");
+            
+            if (!emailRegex.test(updateEmail)) {
+                console.log("email validation failed");
+                
+                setErrorEmail(true);
+            } else {
+                setErrorEmail(false);
+            }
+            setErrorEmail(false);
+        }
+
+        if (updateNewPassword!==updateNewRepeatPassword) {
+            setErrorPasswordMismatch(true);
+        } else {
+            setErrorPasswordMismatch(false);
+        }
+
+
+        if (updateNewPassword) {
+            console.log("changepassword");
+            
+        } else {
+            //////////////change password
+        }
+
+        if (errorEmail) {
+            console.log("return");
+            
+            return;
+        }
+
+
         try {
             let data = {
                 updateFirstName: updateFirstName,
@@ -28,7 +66,7 @@ const Account = () => {
             }
             console.log(data);
             
-            const res = await axios.post(`http://localhost:4000/api/v1/users/updateUser?id=${userId}`,data);
+            const res = await axios.post(`http://localhost:3002/api/v1/users/profile/user/updateUser?id=${userId}`,data,{ withCredentials: true });
             console.log(res.data);
             setRefreshDetails((prevState) => !prevState);
             setEditMode(false);
@@ -55,7 +93,7 @@ const Account = () => {
         const userData = async () => {
             //   setLoading(true); // Start loading
             try {
-                const response = await axios.get(`http://localhost:4000/api/v1/users/getUserById?id=${userId}`); // Replace with your API endpoint
+                const response = await axios.get(`http://localhost:3002/api/v1/users/profile/user/getUserById?id=${userId}`,{ withCredentials: true }); // Replace with your API endpoint
                 setUser(response.data); // Save response data to state
                 console.log(response);
 

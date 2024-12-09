@@ -6,15 +6,34 @@ import axios from 'axios';
 
 function Sidebar({ setActiveTab, activeTab }) {
 
-
-
   const [image, setImage] = useState();
   const [imageUrl, setImageUrl] = useState();
   const [userId, setUserId] = useState(2);
   const fileInputRef = useRef(null);
   const [refreshDetails, setRefreshDetails] = useState(true);
   const [imageUrlDB, setImageUrlDB] = useState();
-  const [error, setError] = useState("")
+  const [error, setError] = useState("");
+  const [user, setUser] = useState();
+
+
+  useEffect(() => {
+    const userData = async () => {
+        //   setLoading(true); // Start loading
+        try {
+            const response = await axios.get(`http://localhost:3002/api/v1/users/profile/user/getUserById?id=${userId}`,{ withCredentials: true }); // Replace with your API endpoint
+            setUser(response.data); // Save response data to state
+            console.log(response);
+
+        } catch (err) {
+            setError(err.message); // Handle errors
+        }
+    };
+
+    userData();
+}, [refreshDetails]);
+
+
+
 
 
 
@@ -43,14 +62,14 @@ function Sidebar({ setActiveTab, activeTab }) {
       }
   
       try {
-        const uploadResponse = await axios.post(`http://localhost:4000/api/v1/users/uploadProfileImage`, formData, {
+        const uploadResponse = await axios.post(`http://localhost:3002/api/v1/users/profile/user/uploadProfileImage`, formData, {
           headers: { 'Content-Type': 'multipart/form-data' },
         });
         const imageUrl = uploadResponse.data.url;
         console.log(imageUrl);
         
   
-        await axios.post(`http://localhost:4000/api/v1/users/updateUserProfile?id=${userId}`, { imageUrl });
+        await axios.post(`http://localhost:3002/api/v1/users/profile/user/updateUserProfile?id=${userId}`, { imageUrl });
         setImageUrl(imageUrl); // Update the state 
         setRefreshDetails((prev) => !prev);
       } catch (error) {
@@ -66,7 +85,7 @@ function Sidebar({ setActiveTab, activeTab }) {
     const userData = async () => {
       //   setLoading(true); // Start loading
       try {
-        const response = await axios.get(`http://localhost:4000/api/v1/users/getUserByID?id=${userId}`); // Replace with your API endpoint
+        const response = await axios.get(`http://localhost:3002/api/v1/users/profile/user/getUserByID?id=${userId}`,{ withCredentials: true }); // Replace with your API endpoint
         setImageUrlDB(response.data.profileImage);
 
 
@@ -114,7 +133,7 @@ function Sidebar({ setActiveTab, activeTab }) {
               onChange={handleFileInput}
             />
 
-            <h2 className="mt-2 font-semibold text-3xl text-gray-300">Sofia Havertz</h2>
+            <h2 className="mt-2 font-semibold text-3xl text-gray-300">{user?.firstName}</h2>
           </div>
         </div>
         {/* <hr className=' ml-3 mr-3 border-black'></hr> */}

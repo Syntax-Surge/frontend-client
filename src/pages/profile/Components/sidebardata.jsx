@@ -13,10 +13,10 @@ export const sidebardata = [
         title:  "Orders",
         link: "orders",
     },
-    {
-        title:  "Tracking",
-        link: "tracking",
-    },
+    // {
+    //     title:  "Tracking",
+    //     link: "tracking",
+    // },
     {
         title:  "Log Out",
         link: "",
