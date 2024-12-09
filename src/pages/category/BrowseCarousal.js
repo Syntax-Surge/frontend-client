@@ -4,11 +4,13 @@ import React, { useEffect, useState } from 'react'
 import { MdNavigateBefore, MdNavigateNext } from 'react-icons/md'
 import { useCustomContext } from '../../contexts/Context';
 import ProductList from './ProductList';
+import { Link, useNavigate } from 'react-router-dom';
 
 
 const BrowseCarousal = () => {
 
     const [data, setData] = useState([]);
+    const navigate = useNavigate();
     const { selectedCategory, setSelectedCategory, categories, setCategories } = useCustomContext();
 
     useEffect(() => {
@@ -29,7 +31,11 @@ const BrowseCarousal = () => {
     }
 
     const hancleClick = (category) => {
+        const currnetPath = window.location.pathname;
         setSelectedCategory(category);
+        if (currnetPath != '/browse') {
+            navigate('/browse');
+        }
     }
 
     const handleImageError = (event) => {

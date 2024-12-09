@@ -13,6 +13,8 @@ import BrowseByCategory from './pages/category/BrowseByCategory';
 import Navbar from './components/layout/navbar';
 import CartPage from "./pages/Shopping Cart/CartPage";
 import CheckoutPage from "./pages/Shopping Cart/CheckoutPage";
+import CustomerReviews from "./pages/reviews/Reviews";
+import CustomerReview from "./pages/reviews/CustomerReview";
 
 // border border-black
 import Profile from './pages/profile/Profile';
@@ -27,10 +29,8 @@ function App() {
       <BrowserRouter>
         {/* <Navbar /> */}
         <Routes>
- 
           <Route element={<MainLayout/>}>
- 
-         
+
             <Route path="/" element={<Home/>} />
             <Route path="/checkout" element={<Checkout/>} />
             <Route path="/checkoutPage" element={<CheckoutPage/>} />
@@ -49,7 +49,7 @@ function App() {
             <Route path="/auth/signIn" element={<SignIn/>} />
             <Route path="/auth/user/reset/:id" element={<ChangePassword/>} />
             <Route path="/auth/user/forgot-password" element={<ForgotPassword/>} />
-
+            <Route path="/reviews" element={<CustomerReview />} />
             <Route path='/browse' element={<BrowseByCategory/>} />
           </Route>
           
