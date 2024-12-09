@@ -116,7 +116,7 @@ const CheckoutPage = () => {
           },
           total: (shipping + itemTotal).toFixed(2) ,
           items: puchaseItems,
-        })
+        },{withCredentials:true})
         .then((response) => {
           const data = response.data; // Access the response data
           if (data.clientSecret) {
@@ -157,14 +157,15 @@ const CheckoutPage = () => {
   };
 
   const getShippingAddress = async () => {
-    const data = await axios.get("localhost/user shipping address", {});
-    const { addressLine1, addressLine2, city, postalCode } = data;
+    const res = await axios.get("http://localhost:3002/api/v1/users/profile/user/getAddressById?id=20",{withCredentials:true});
+    const { shippingAddressLine1, shippingAddressLine2, shippingCity, shippingPostalCode } = res.data;
+    console.log(shippingAddressLine1,res.data,"shipping address");
 
     setShippingDetails({
-      addressLine1: addressLine1 || "",
-      addressLine2: addressLine2 || "",
-      city: city || "",
-      postalCode: postalCode || "",
+      addressLine1: shippingAddressLine1 || "",
+      addressLine2: shippingAddressLine2 || "",
+      city: shippingCity || "",
+      postalCode: shippingPostalCode || "",
     });
   };
 
@@ -178,7 +179,7 @@ const CheckoutPage = () => {
   };
 
   useEffect(() => {
-    // getShippingAddress()
+     getShippingAddress()
   }, []);
   // useEffect(() => {
   //   console.log("fetch");

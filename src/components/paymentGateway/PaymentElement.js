@@ -68,7 +68,7 @@ function PaymentElementComponent() {
             {
               paymentIntent,
               "orderId":2
-            })
+            },{withCredentials:true})
             console.log(data);
             setOrderSideBar('orders')  
             toast.success("payment successful", {

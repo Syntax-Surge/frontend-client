@@ -24,13 +24,6 @@ const CartPage = () => {
   const userId = 1; //
   const url = "http://localhost:3002/api/v1/orders";
 
-  // const handleCheckout = () => {
-  //   setPurchaseItems(selectedCartItems);
-  //   console.log("Selected Items", selectedCartItems);
-  //   setTimeout(() => {
-  //     navigate('/checkoutPage');
-  //   }, 0);
-  // };
   const handleCheckout = () => {
     if (selectedCartItems.length > 0) {
       // Check if there are any selected items
@@ -61,7 +54,7 @@ const CartPage = () => {
   // Fetch cart items from the backend
   const fetchCartItems = async () => {
     try {
-      const response = await axios.get(url + `/cart/${userId}`);
+      const response = await axios.get(url + `/cart/${userId}`,{withCredentials:true});
       setCartItems(response.data);
       console.log(response.data);
     } catch (error) {
@@ -79,7 +72,7 @@ const CartPage = () => {
         userId,
         productId: id,
         quantity: amount,
-      });
+      },{withCredentials:true});
       fetchCartItems(); // Refresh cart
     } catch (error) {
       console.error("Error updating item quantity:", error.message);
@@ -96,8 +89,9 @@ const CartPage = () => {
   // Remove an item from the cart
   const handleRemoveFromCart = async (id) => {
     try {
-      await axios.delete(url + `/cart/remove/${id}`, {
+      await axios.delete(`${url}/cart/remove/${id}`, {
         data: { userId, productId: id },
+        withCredentials:true
       });
       fetchCartItems(); // Refresh cart
     } catch (error) {
@@ -129,7 +123,7 @@ const CartPage = () => {
     (acc, item) => acc + item.product.unitPrice * item.quantity,
     0
   );
-  const discount = selectedCartItems.length > 0 ? 10 : 0; // Example discount
+  const discount = selectedCartItems.length > 0 ? 0 : 0; // Example discount
   const total = subTotal - discount;
 
   return (
