@@ -21,15 +21,13 @@ function Reviews({ onCardClick, productId, handleRate }) {
             },
           }
         );
-        setTopReviews(topTwoReviews.data.rows);
-        // console.log(topTwoReviews);
-        
+        setTopReviews(topTwoReviews.data);
+        console.log(topTwoReviews);
       } catch (error) {
         console.error(error.message);
       }
     };
     TopTwoReviews();
-
   }, []);
 
   const { avgRating, topTwoReviews } = TopReviews;
@@ -41,25 +39,17 @@ function Reviews({ onCardClick, productId, handleRate }) {
     return <div>Loading reviews...</div>;
   }
 
- 
-
-
   const updatedReviews = topTwoReviews.map((review) => {
     const dateOnly = new Date(review.createdAt).toISOString().split('T')[0];
 
     return {
-      ...review, 
-      dateOnly, 
+      ...review,
+      dateOnly,
     };
   });
 
-
-
   return (
-    <div
-      className='bg-white my-5 pb-3 shadow-sm sm:px-4 '
-
-    >
+    <div className='bg-white my-5 pb-3 shadow-sm sm:px-4 '>
       {/* top  */}
       <div className='flex justify-between px-5 pt-5 md:px-32 lg:px-40 xl:px-52 2xl:px-72'>
         <div className='text-lg font-medium sm:text-xl'>Customer Review</div>

@@ -10,8 +10,9 @@ import axios from 'axios';
 import Buttons from '../shop/components/buttons/button';
 
 function Item() {
-  const { id } = useParams();
-  // console.log("id is",id);
+  let { id } = useParams();
+  id = parseInt(id, 10);
+  console.log("id is",id);
 
   const [showReviewDetail, setShowReviewDetail] = useState(false);
   const [itemData, setItemData] = useState({});
@@ -23,6 +24,8 @@ function Item() {
   };
 
   const handleShowReviewDetail = () => {
+    console.log('review deatail clicked');
+    
     setShowReviewDetail(true);
   };
   const backPage = () => {
@@ -61,9 +64,10 @@ const onClick = async () => {
       {
         productId: id,
         quantity: 1,
-      }
+      },
+      { withCredentials: true }
     );
-    console.log('Item added to cart', response.data);
+    console.log('Item added to cart', response);
   } catch (error) {
     console.error('Error adding item to cart', error);
   }
@@ -147,7 +151,8 @@ const onClick = async () => {
 
                 {/* add to cart button  */}
                 <div className='hidden md:block md:mt-14'>
-                  <Buttons onClick={onClick}
+                  <Buttons
+                    onClick={onClick}
                     name='Add to cart'
                     color='bg-[rgba(74,156,128,0.5)]'
                   />
@@ -173,7 +178,11 @@ const onClick = async () => {
             className='bg-white h-[50px] fixed bottom-0 left-0 w-screen z-50 flex items-center justify-around sm:h-[60px]
           md:hidden'
           >
-            <Buttons name='Buy now' color='bg-green-300' />
+            <Buttons
+              name='Add to cart'
+              color='bg-green-300'
+              onClick={onClick}
+            />
           </div>
         </>
       ) : (

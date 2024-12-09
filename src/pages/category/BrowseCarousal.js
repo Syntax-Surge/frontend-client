@@ -14,7 +14,7 @@ const BrowseCarousal = () => {
     const { selectedCategory, setSelectedCategory, categories, setCategories } = useCustomContext();
 
     useEffect(() => {
-        console.log("Frontend use effect called");
+        // console.log("Frontend use effect called");
         getCategories();
     }, []);
 

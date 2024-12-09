@@ -11,8 +11,10 @@ import Shop from './pages/shop/Shop';
 import Item from './pages/item/Item';
 import BrowseByCategory from './pages/category/BrowseByCategory';
 import Navbar from './components/layout/navbar';
-import CartPage from './pages/Shopping Cart/CartPage';
-import CheckoutPage from './pages/Shopping Cart/CheckoutPage';
+import CartPage from "./pages/Shopping Cart/CartPage";
+import CheckoutPage from "./pages/Shopping Cart/CheckoutPage";
+import CustomerReviews from "./pages/reviews/Reviews";
+import CustomerReview from "./pages/reviews/CustomerReview";
 
 // border border-black
 import Profile from './pages/profile/Profile';
@@ -25,11 +27,12 @@ function App() {
     <Provider>
       <BrowserRouter>
         <Routes>
-          <Route element={<MainLayout />}>
-            <Route path='/' element={<Home />} />
-            <Route path='/checkout' element={<Checkout />} />
-            <Route path='/checkoutPage' element={<CheckoutPage />} />
+          <Route element={<MainLayout/>}>
 
+            <Route path="/" element={<Home/>} />
+            <Route path="/checkout" element={<Checkout/>} />
+            <Route path="/checkoutPage" element={<CheckoutPage/>} />
+ 
             <Route path='/' element={<Home />} />
 
             <Route path='/shop' element={<Shop showHeroAndFilter={true} />} />
@@ -39,16 +42,13 @@ function App() {
             <Route path='/cart/:userId' element={<CartPage />} />
           </Route>
 
-          <Route element={<AuthLayout />}>
-            <Route path='/auth/signup' element={<SignUp />} />
-            <Route path='/auth/signIn' element={<SignIn />} />
-            <Route path='/auth/user/reset/:id' element={<ChangePassword />} />
-            <Route
-              path='/auth/user/forgot-password'
-              element={<ForgotPassword />}
-            />
-
-            <Route path='/browse' element={<BrowseByCategory />} />
+          <Route element={<AuthLayout/>}>
+            <Route path="/auth/signup" element={<SignUp/>} />
+            <Route path="/auth/signIn" element={<SignIn/>} />
+            <Route path="/auth/user/reset/:id" element={<ChangePassword/>} />
+            <Route path="/auth/user/forgot-password" element={<ForgotPassword/>} />
+            <Route path="/reviews" element={<CustomerReview />} />
+            <Route path='/browse' element={<BrowseByCategory/>} />
           </Route>
         </Routes>
         {/* <Footer /> */}
