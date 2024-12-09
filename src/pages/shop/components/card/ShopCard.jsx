@@ -39,7 +39,7 @@ export function PlantItemCard({
         color='transparent'
         className='m-0 flex justify-center'
       >
-        <img src={imageUrl} alt={`${name}, image`} />
+        <img src={imageUrl} alt={`${name}, image`} className='w-72'/>
       </CardHeader>
       <CardBody
         className='p-1

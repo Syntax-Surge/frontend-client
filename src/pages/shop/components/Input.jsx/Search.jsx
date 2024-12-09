@@ -9,7 +9,8 @@ function Search() {
     setTempSearched(event.target.value);
   };
 
-  const handleClick = () => {
+  // click on search icon
+  const handleClick = () => {   
     setSearched(tempSearched);
   };
 

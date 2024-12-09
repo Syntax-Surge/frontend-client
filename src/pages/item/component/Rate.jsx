@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 
-export default function Rate({ showText, rate }) {
-  // console.log(rate);
-
+export default function Rate({ showText, rate, 
+  // orderCount 
+}) {
   const roundedRate = Math.round(rate);
 
   const stars = Array.from({ length: 5 }, (_, i) => (
@@ -28,7 +28,9 @@ export default function Rate({ showText, rate }) {
         {stars} <span className='ml-1 text-[10px] sm:text-xs'>{rate}</span>{' '}
         {showText && (
           <>
-            <span className='ml-1 text-[10px] sm:text-xs'>| 3234 sold</span>
+            <span className='ml-1 text-[10px] sm:text-xs'>
+              |  sold
+            </span>
           </>
         )}
       </div>

@@ -21,7 +21,7 @@ export function CatogoryDropList() {
     const getCatagory = async () => {
       try {
         const catagories = await axios.get(
-          `http://localhost:5000/api/v1/categories`
+          `http://localhost:3002/api/v1/products/categories`
         );
 
         setCatagories(catagories.data);
