@@ -420,7 +420,7 @@ const SignIn = () => {
                   {/* <span className="text-sm font-medium text-gray-900">Sign in with Google</span> */}
                 </Button>
               </div>
-              <Button onClick={() => logout()}>Sign out</Button>
+              {/* <Button onClick={() => logout()}>Sign out</Button> */}
             </form>
           </Card>
         </div>
