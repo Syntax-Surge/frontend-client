@@ -64,7 +64,7 @@ function PaymentElementComponent() {
       
       if (paymentIntent.status === 'succeeded') {
         const data=await axios
-        .post('http://localhost:3006/api/payment/confirmPayment', 
+        .post('http://localhost:3002/api/v1/orders/payment/confirmPayment', 
           {
             paymentIntent,
             "orderId":2

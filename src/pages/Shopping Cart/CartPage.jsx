@@ -21,7 +21,7 @@ const CartPage = () => {
   const { puchaseItems, setPurchaseItems } = useCustomContext();
 
   const userId = 1; //
-  const url = "http://localhost:3006/api";
+  const url = "http://localhost:3002/api/v1/orders";
 
   const handleCheckout = () => {
     setPurchaseItems(selectedCartItems);  
