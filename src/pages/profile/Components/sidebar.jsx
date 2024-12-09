@@ -1,10 +1,15 @@
 import React, { useState, useRef, useEffect } from 'react'
 import { sidebardata } from './sidebardata'
 import axios from 'axios';
+import { toast } from "react-toastify";
+import { useCookies } from "react-cookie";
+import { Link, useNavigate } from "react-router-dom";
 
 
 
 function Sidebar({ setActiveTab, activeTab }) {
+
+  const navigate = useNavigate();
 
   const [image, setImage] = useState();
   const [imageUrl, setImageUrl] = useState();
@@ -14,6 +19,7 @@ function Sidebar({ setActiveTab, activeTab }) {
   const [imageUrlDB, setImageUrlDB] = useState();
   const [error, setError] = useState("");
   const [user, setUser] = useState();
+  const [cookies, setCookie, removeCookie] = useCookies(['user']);
 
 
   useEffect(() => {
@@ -31,6 +37,52 @@ function Sidebar({ setActiveTab, activeTab }) {
 
     userData();
 }, [refreshDetails]);
+
+
+const logout = async () => {
+  try {
+    const response = await axios.post("http://localhost:3002/api/v1/users/logout", {}, { withCredentials: true });
+    console.log('Response Headers:', response.headers);
+    console.log('Response :', response);
+    if (response.status === 200) {
+      toast.success('Successfully Signed Out', {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+       });
+       // Logout successful
+       // Clear local authentication state
+       // localStorage.removeItem('userId'); // Or any other relevant state
+       // Redirect to login page
+       // window.location.href = '/login'; 
+       removeCookie('user',{path:'/'});
+       removeCookie('connect.sid',{path:'/'});
+       setTimeout(() => {
+        navigate("/");
+        }, 2000); 
+    } else {
+      // Handle non-200 responses (e.g., 400, 500)
+      throw new Error(`Logout failed with status: ${response.status}`); 
+    }
+  } catch (error) {
+    console.error('Logout error:', error);
+    toast.error(`Error Occured..Try again!`, {
+      position: "top-center",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+    });
+  }
+};
 
 
 
@@ -153,6 +205,9 @@ function Sidebar({ setActiveTab, activeTab }) {
 
               );
             })}
+            <li className={`mt-2 mb-2 pt-2 pl-5 pb-2 hover:text-[#1B786F] hover:cursor-pointer hover:bg-gray-300 rounded-xl` } onClick={ () => logout()}>
+              Log Out
+            </li>
           </ul>
         </div>
 

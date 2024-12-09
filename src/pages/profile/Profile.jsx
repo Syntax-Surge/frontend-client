@@ -4,8 +4,12 @@ import Account from "./account";
 import Navbar from "../../components/layout/navbar";
 import Address from "./address";
 import Orders from "./orders";
+import { useCustomContext } from "../../contexts/Context";
 const Profile = () => {
-    const [activeTab,setActiveTab] = useState("account")
+
+    const { OrderSideBar } = useCustomContext();
+    const [activeTab,setActiveTab] = useState(OrderSideBar)
+    // const [activeTab,setActiveTab] = useState("account")
 
     const renderContent = () => {
         if (activeTab==="account") {

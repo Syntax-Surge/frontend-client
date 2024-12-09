@@ -354,7 +354,7 @@ const Orders = () => {
                 placeholder={ReviewsByUser?.rating}   
               />
             </div>
-            <div className=' bg-blue-gray-600 flex justify-end mr-7'>
+            <div className='  flex justify-end mr-7'>
 
 
             {ReviewsByUser && !editMode ? 

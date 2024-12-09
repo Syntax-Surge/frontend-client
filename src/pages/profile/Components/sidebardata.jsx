@@ -17,9 +17,9 @@ export const sidebardata = [
     //     title:  "Tracking",
     //     link: "tracking",
     // },
-    {
-        title:  "Log Out",
-        link: "",
-    }
+    // {
+    //     title:  "Log Out",
+    //     link: "",
+    // }
 ];
 
