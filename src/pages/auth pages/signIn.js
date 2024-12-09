@@ -12,6 +12,7 @@ import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 import { CookiesProvider, useCookies } from "react-cookie";
+
 // import cookie from 'react-cookie'
 
 const SignIn = () => { 
@@ -108,6 +109,7 @@ const SignIn = () => {
               progress: undefined,
               theme: "light",
             });
+
             setTimeout(() => {
               navigate("/");
             }, 2000); // Slightly longer than `autoClose` duration to ensure the toast is fully visible

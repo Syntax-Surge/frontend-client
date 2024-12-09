@@ -112,7 +112,7 @@ const CheckoutPage = () => {
       console.log("Form submitted successfully", shippingDetails);
 
       await axios
-        .post("http://localhost:3006/api/payment/createIntent", {
+        .post("http://localhost:3002/api/v1/orders/payment/createIntent", {
           customer: {
             id: 1,
           },
