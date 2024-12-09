@@ -8,11 +8,14 @@ import ShopSec from '../shop/Shop';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import Buttons from '../shop/components/buttons/button';
+import { useNavigate } from 'react-router-dom';
 
 function Item() {
   let { id } = useParams();
   id = parseInt(id, 10);
   console.log("id is",id);
+
+  const navigate = useNavigate();
 
   const [showReviewDetail, setShowReviewDetail] = useState(false);
   const [itemData, setItemData] = useState({});
@@ -71,6 +74,10 @@ const onClick = async () => {
   } catch (error) {
     console.error('Error adding item to cart', error);
   }
+};
+
+const onClickBuy = async () => {
+  navigate('/cart/:userId');
 };
 
 
@@ -151,11 +158,18 @@ const onClick = async () => {
 
                 {/* add to cart button  */}
                 <div className='hidden md:block md:mt-14'>
-                  <Buttons
-                    onClick={onClick}
-                    name='Add to cart'
-                    color='bg-[rgba(74,156,128,0.5)]'
-                  />
+                  <div className='flex justify-around'>
+                    <Buttons
+                      onClick={onClick}
+                      name='Add to cart'
+                      color='bg-[rgba(74,156,128,0.5)]'
+                    />
+                    <Buttons
+                      onClick={onClickBuy}
+                      name='Buy now'
+                      color='bg-[rgba(74,156,128,0.5)]'
+                    />
+                  </div>
                 </div>
               </div>
             </div>
