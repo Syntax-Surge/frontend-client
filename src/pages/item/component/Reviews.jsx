@@ -14,14 +14,16 @@ function Reviews({ onCardClick, productId, handleRate }) {
     const TopTwoReviews = async () => {
       try {
         const topTwoReviews = await axios.get(
-          'http://localhost:5000/api/v1/reviews/two',
+          'http://localhost:3002/api/v1/products/reviews/two',
           {
             headers: {
               id: productId,
             },
           }
         );
-        setTopReviews(topTwoReviews.data);
+        setTopReviews(topTwoReviews.data.rows);
+        // console.log(topTwoReviews);
+        
       } catch (error) {
         console.error(error.message);
       }
@@ -31,6 +33,7 @@ function Reviews({ onCardClick, productId, handleRate }) {
   }, []);
 
   const { avgRating, topTwoReviews } = TopReviews;
+  console.log(TopReviews);
 
   handleRate(avgRating);
 

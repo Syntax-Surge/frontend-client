@@ -14,7 +14,7 @@ function ShopSec() {
   const [loading, setLoading] = useState(false);
   const [active, setActive] = React.useState(0);
 
-  console.log('curruntpage', curruntPage);
+  // console.log('curruntpage', searched);
 
   // Scroll to top whenever curruntPage changes
   useEffect(() => {
@@ -25,11 +25,11 @@ function ShopSec() {
   useEffect(() => {
     const getItemData = async () => {
       try {
-        let endpoint = 'http://localhost:5000/api/v1/products/';
+        let endpoint = 'http://localhost:3002/api/v1/products/products';
         const params = { page: curruntPage };
 
         if (filteredCategory.length > 0 || minValue || maxValue) {
-          endpoint = 'http://localhost:5000/api/v1/filter';
+          endpoint = 'http://localhost:3002/api/v1/products/products/filter';
           if (filteredCategory.length > 0)
             params.filteredCategory = filteredCategory;
           if (minValue) params.minValue = minValue;
@@ -37,7 +37,7 @@ function ShopSec() {
         }
 
         if (searched) {
-          endpoint = 'http://localhost:5000/api/v1/search';
+          endpoint = 'http://localhost:3002/api/v1/products/products/search';
           params.keyword = searched;
         }
 

@@ -11,7 +11,7 @@ const Buttons = ({name, onClick, loading,color , isActive}) => {
 
         className={`flex items-center justify-center normal-case ${color} font-normal text-black
         }  transition duration-300 ease font-roboto
-          md:text-base md:w-28 `}
+          md:text-base  `}
         style={{
           height: '31px',
           borderRadius: '4px',

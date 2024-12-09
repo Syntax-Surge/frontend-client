@@ -38,7 +38,7 @@ function Item() {
     const getItem = async () => {
       try {
         const item = await axios.get(
-          `http://localhost:5000/api/v1/products/${id}`
+          `http://localhost:3002/api/v1/products/products/${id}`
         );
         // const orders = await axios.get(
         //   `http://localhost:5000/api/v1/products/${id}`
@@ -52,6 +52,23 @@ function Item() {
     };
     getItem();
   }, [id]);
+
+  //add to cart
+const onClick = async () => {
+  try {
+    const response = await axios.post(
+      'http://localhost:3002/api/v1/orders/cart/add',
+      {
+        productId: id,
+        quantity: 1,
+      }
+    );
+    console.log('Item added to cart', response.data);
+  } catch (error) {
+    console.error('Error adding item to cart', error);
+  }
+};
+
 
   const {
     pictureLocation,
@@ -127,8 +144,13 @@ function Item() {
                 >
                   Weight : {unitWeight} kg
                 </Typography>
+
+                {/* add to cart button  */}
                 <div className='hidden md:block md:mt-14'>
-                  <Buttons name='Buy now' color='bg-[rgba(74,156,128,0.5)]' />
+                  <Buttons onClick={onClick}
+                    name='Add to cart'
+                    color='bg-[rgba(74,156,128,0.5)]'
+                  />
                 </div>
               </div>
             </div>
