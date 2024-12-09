@@ -19,26 +19,9 @@ const CartPage = () => {
   const [cartItems, setCartItems] = useState([]);
   const [selectedItems, setSelectedItems] = useState([]);
   const { puchaseItems, setPurchaseItems } = useCustomContext();
-  // const [selectedItems, setSelectedItems] = useState([
-  //   {
-  //     productId: 2,
-  //     productName: "kaktus",
-  //     quantity: 3,
-  //     pictureLocation: "",
-  //     subTotal: 5200,
-  //     price: 200,
-  //   },
-  //   {
-  //     productId: 2,
-  //     productName: "kaktus",
-  //     quantity: 3,
-  //     pictureLocation: "",
-  //     subTotal: 5200,
-  //     price: 200,
-  //   },
-  // ]);
+
   const userId = 1; //
-  const url = "http://localhost:3006/api";
+  const url = "http://localhost:3002/api/v1/orders";
 
   const handleCheckout = () => {
     setPurchaseItems(selectedCartItems);  
